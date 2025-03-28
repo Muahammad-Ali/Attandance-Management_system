@@ -6,8 +6,8 @@
         <!-- Heading -->
         <div class=" text-folly">
             <h1 class="text-xl font-bold ">
-                Computer Science
-                {{-- <span class="text-2xl">Management</span> --}}
+                Attendance Management
+                <span class="text-2xl">System</span>
             </h1>
         </div>
 
@@ -23,9 +23,16 @@
                     </svg>
                 </div>
                 <div>
-                    <a  class="font-bold">
-                       Dashboard
-                    </a>
+                    {{-- <a href="{{ route('dashboard') }}" class="font-bold">
+                        @if (auth()->user()->hasRole('SuperAdmin'))
+                            SuperAdmin Dashboard
+                        @elseif (auth()->user()->hasRole('Admin'))
+                            Admin Dashboard
+                        @elseif (auth()->user()->hasRole('User'))
+                            Employee Dashboard
+                        @endif
+                    </a> --}}
+                    Admin Dashboard
                 </div>
             </div>
 
@@ -34,16 +41,11 @@
                 <!-- Meal -->
                 <div class="daily-meal-count">
                     <div class="flex items-center ml-6 space-x-1">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M13.9246 1.75L13.9238 13.761C14.1388 14.1148 14.3613 14.2509 14.5479 14.25C14.733 14.2491 14.9531 14.1114 15.1639 13.7682L14.5881 7.63344L14.5814 7.55872L14.6275 7.49916C15.2892 6.65013 15.5204 5.18328 15.3316 3.94259C15.2373 3.32222 15.0397 2.76072 14.763 2.36378C14.531 2.03091 14.2543 1.81856 13.9247 1.75H13.9246ZM2.28789 1.75013L2.28739 3.84784L1.89489 3.84734V1.75025H1.44786L1.44792 3.84744H1.05486V1.75025H0.599548V4.97612C0.599517 5.33291 0.794236 5.53075 1.1008 5.65306L1.22767 5.70375L1.22486 5.84031C1.16236 8.48312 1.10058 11.1259 1.03855 13.7687C1.2523 14.1184 1.47186 14.2509 1.65467 14.25C1.83749 14.2491 2.05686 14.1132 2.26789 13.7677C2.19552 11.1256 2.12321 8.48352 2.05099 5.84137L2.04724 5.70388L2.17452 5.65369C2.49714 5.52537 2.70699 5.30763 2.70699 4.97631V1.75013H2.28789ZM7.99999 2.96875C6.66561 2.96875 5.3859 3.49883 4.44235 4.44237C3.49881 5.38591 2.96874 6.66563 2.96874 8C2.96874 9.33437 3.49881 10.6141 4.44235 11.5576C5.3859 12.5012 6.66561 13.0312 7.99999 13.0312C9.33436 13.0312 10.6141 12.5012 11.5576 11.5576C12.5012 10.6141 13.0312 9.33437 13.0312 8C13.0312 6.66563 12.5012 5.38591 11.5576 4.44237C10.6141 3.49883 9.33436 2.96875 7.99999 2.96875Z"
-                                fill="#99A1B7" />
-                        </svg>
+                        <LayoutDashboard />
 
-                        <span class="flex items-center py-2 font-semibold text-gray-500 rounded-lg">
-                            Students
-                        </span>
+                        <a href="{{ route('dashboard') }}" class="flex items-center py-2 font-semibold text-gray-500 rounded-lg">
+                            Dashboard
+                        </a>
                     </div>
                     {{-- Daily Meal Count --}}
                     <div class="flex items-center space-x-1 text-slate-500 ml-9">
@@ -53,7 +55,8 @@
                                 d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
                                 fill="#99A1B7" />
                         </svg>
-                        <a class="text-black" >Feedback</a>
+                        <a class="text-black" href="{{ route('feedback') }}">Feedback</a>
+
                     </div>
                 </div>
             </div>
@@ -68,9 +71,18 @@
                     </svg>
 
                     <!-- Additional Item Request -->
-                    <span class="space-y-2 font-semibold text-gray-500">Applications</span>
+                    <span class="space-y-2 font-semibold text-gray-500">Features</span>
                 </div>
 
+                <div class="flex items-center px-1 space-x-1 text-slate-500 ml-9">
+                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
+                            fill="#99A1B7" />
+                    </svg>
+                    <a class="text-black" href="{{ route('applications') }}">Applications</a>
+                </div>
 
                 <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
                     <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
@@ -92,7 +104,7 @@
                             fill="#99A1B7" />
                     </svg>
 
-                    <a class="text-black">Cr</a>
+                    <a class="text-black" >cr</a>
 
                 </div>
 

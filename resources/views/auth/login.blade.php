@@ -41,4 +41,5 @@
         <!-- Submit Button -->
         <button type="submit">Log In</button>
     </form>
+    <button  href="{{ route('register') }}">Register</button>
 </x-guest-layout>

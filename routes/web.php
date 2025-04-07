@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\CrController;
 use App\Http\Controllers\Dashboard\EmployeeController;
 use App\Http\Controllers\feedbackController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,8 +25,20 @@ Route::controller(feedbackController::class)->group(function () {
     Route::get('/feedbacks', 'index')->name('feedback');
 
 });
+Route::controller(TeacherController::class)->group(function () {
+    Route::get('/teacher', 'index')->name('teacher');
+
+});
+Route::controller(CrController::class)->group(function () {
+    Route::get('/cr', 'index')->name('cr');
+
+});
 Route::controller(ApplicationController::class)->group(function () {
     Route::get('/applications', 'index')->name('applications');
+
+});
+Route::controller(SubjectController::class)->group(function () {
+    Route::get('/Subject', 'index')->name('subject');
 
 });
 

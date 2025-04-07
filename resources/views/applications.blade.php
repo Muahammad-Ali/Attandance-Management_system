@@ -27,7 +27,7 @@
                         <button class="decline-btn bg-red-500 text-white px-4 py-2 rounded-md ml-2">Decline</button>
                     </td>
                 </tr>
-                <tr class="student-row" data-reg="REG456" data-student="Ayesha Khan" data-subject="Physics" data-application="Physics has always fascinated me. I enjoy understanding the laws of nature and experimenting with physical concepts.">
+                <tr class="student-row" data-reg="REG456" data-student="khan" data-subject="Physics" data-application="Physics has always fascinated me. I enjoy understanding the laws of nature and experimenting with physical concepts.">
                     <td class="px-6 py-4 whitespace-nowrap">REG456</td>
                     <td class="px-6 py-4 whitespace-nowrap"> Khan</td>
                     <td class="px-6 py-4 whitespace-nowrap">Physics</td>

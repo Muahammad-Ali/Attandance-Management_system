@@ -92,7 +92,7 @@
                             fill="#99A1B7" />
                     </svg>
 
-                    <a class="text-black" >Teacher</a>
+                    <a class="text-black"  href="{{ route('teacher') }}">Teacher</a>
 
                 </div>
 
@@ -104,7 +104,7 @@
                             fill="#99A1B7" />
                     </svg>
 
-                    <a class="text-black" >cr</a>
+                    <a class="text-black" href="{{ route('cr') }}">cr</a>
 
                 </div>
 
@@ -116,7 +116,7 @@
                             fill="#99A1B7" />
                     </svg>
 
-                    <a class="text-black" >Subject</a>
+                    <a class="text-black" href="{{ route('subject') }}">Subject</a>
 
                 </div>
             </div>

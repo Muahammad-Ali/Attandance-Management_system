@@ -8,9 +8,9 @@
                 <label for="role">Role</label>
                 <select id="role" name="role" required>
                     <option value="" disabled selected>Select Role</option>
-                    <option value="teacher">Admin</option>
+                    <option value="admin">Admin</option>
                     <option value="teacher">Teacher</option>
-                    <option value="student">Student</option>
+                    <option value="cr">Cr</option>
                     <option value="staff_advisor">Staff Advisor</option>
                 </select>
             </div>
@@ -41,5 +41,6 @@
         <!-- Submit Button -->
         <button type="submit">Log In</button>
     </form>
-    <button  href="{{ route('register') }}">Register</button>
+    <a href="{{ route('register') }}"><button type="button">Register</button></a>
+
 </x-guest-layout>

@@ -2,6 +2,17 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
+        <!-- Role Dropdown -->
+<div class="mt-4">
+    <x-input-label for="role" :value="__('Role')" />
+    <select name="role" id="role" class="block mt-1 w-full" required>
+        <option value="admin">Admin</option>
+        <option value="student">Student</option>
+        <option value="staff_advisor">Staff Advisor</option>
+    </select>
+</div>
+
+
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />

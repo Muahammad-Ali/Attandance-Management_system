@@ -29,8 +29,10 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
+            'role' => ['required', 'string', 'in:admin,teacher,cr,staff_advisor'],
         ];
     }
+
 
     /**
      * Attempt to authenticate the request's credentials.
@@ -38,19 +40,29 @@ class LoginRequest extends FormRequest
      * @throws \Illuminate\Validation\ValidationException
      */
     public function authenticate(): void
-    {
-        $this->ensureIsNotRateLimited();
+{
+    $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+    $role = $this->input('role');
 
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
-        }
+    $guard = match ($role) {
+        'teacher' => 'teacher',
+        'admin' => 'web', // You can customize this if needed
+        'cr' => 'cr',
+        'staff_advisor' => 'web',
+        default => 'web',
+    };
 
-        RateLimiter::clear($this->throttleKey());
+    if (! Auth::guard($guard)->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        RateLimiter::hit($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            'email' => trans('auth.failed'),
+        ]);
     }
+
+    RateLimiter::clear($this->throttleKey());
+}
 
     /**
      * Ensure the login request is not rate limited.

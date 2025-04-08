@@ -7,43 +7,61 @@
     <!-- CR Registration Form -->
     <div class="bg-white p-8 rounded-lg shadow-lg w-4/5 mx-auto transition-transform duration-500 hover:scale-105">
         <!-- Success Message -->
-        <div id="successMessage" class="hidden bg-green-100 text-green-800 p-3 rounded-md mb-4 text-center transition-opacity duration-500">
-            🎉 CR created successfully!
-        </div>
 
-        <form id="crForm">
+        @if(session('success'))
+        <div class="bg-green-100 text-green-800 p-3 rounded-md mb-4 text-center">
+            🎉 {{ session('success') }}
+        </div>
+    @endif
+
+
+        <form action="{{ route('cr.store') }}" method="POST">
+            @csrf
+
             <!-- Input Fields in a Single Row -->
             <div class="flex space-x-6">
                 <!-- CR Name -->
                 <div class="w-1/5">
-                    <label class="block text-gray-700 font-medium mb-2" for="cr_name">CR Name</label>
-                    <input type="text" id="cr_name" class="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all duration-300" required>
+                    <label  class="block text-gray-700 font-medium mb-2" for="cr_name">CR Name</label>
+                    <input type="text" name="cr_name" id="cr_name"  class="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all duration-300" required>
                 </div>
 
                 <!-- CR Email -->
                 <div class="w-1/5">
                     <label class="block text-gray-700 font-medium mb-2" for="cr_email">Email</label>
-                    <input type="email" id="cr_email" class="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all duration-300" required>
+                    <input type="email" id="cr_email" name="cr_email" class="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all duration-300" required>
                 </div>
 
                 <!-- Registration Number -->
                 <div class="w-1/5">
                     <label class="block text-gray-700 font-medium mb-2" for="reg_no">Reg No</label>
-                    <input type="text" id="reg_no" class="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all duration-300" required>
+                    <input type="text" id="reg_no" name="reg_no" class="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all duration-300" required>
                 </div>
 
                 <!-- Section -->
                 <div class="w-1/5">
                     <label class="block text-gray-700 font-medium mb-2" for="section">Section</label>
-                    <input type="text" id="section" class="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all duration-300" required>
+                    <input type="text" id="section" name="section"class="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all duration-300" required>
                 </div>
 
                 <!-- Semester -->
                 <div class="w-1/5">
                     <label class="block text-gray-700 font-medium mb-2" for="semester">Semester</label>
-                    <input type="text" id="semester" class="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all duration-300" required>
+                    <input type="text" id="semester" name="semester" class="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all duration-300" required>
                 </div>
             </div>
+            <!-- Password -->
+<div class="w-1/5">
+    <label class="block text-gray-700 font-medium mb-2" for="password">Password</label>
+    <input
+        type="password"
+        name="password"
+        id="password"
+        class="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all duration-300"
+        required
+    >
+</div>
+
 
             <!-- Submit Button -->
             <div class="mt-6 text-center">
@@ -67,9 +85,20 @@
                     <th class="border border-gray-300 px-6 py-3">Semester</th>
                 </tr>
             </thead>
-            <tbody id="crList">
-                <!-- Newly added CRs will be displayed here -->
+            <tbody>
+                @php $i = 1; @endphp
+                @foreach($crs as $cr)
+                    <tr>
+                        <td class="border px-6 py-3">{{ $i++ }}</td>
+                        <td class="border px-6 py-3">{{ $cr->cr_name }}</td>
+                        <td class="border px-6 py-3">{{ $cr->cr_email }}</td>
+                        <td class="border px-6 py-3">{{ $cr->reg_no }}</td>
+                        <td class="border px-6 py-3">{{ $cr->section }}</td>
+                        <td class="border px-6 py-3">{{ $cr->semester }}</td>
+                    </tr>
+                @endforeach
             </tbody>
+
         </table>
     </div>
 

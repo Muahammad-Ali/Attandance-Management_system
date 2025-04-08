@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', function () {
     return redirect('/login');
 });
+Route::middleware(['auth'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
 
 Route::controller(homeController::class)->group(function () {
     Route::get('/', 'index')->name('homescreen');
@@ -25,14 +29,23 @@ Route::controller(feedbackController::class)->group(function () {
     Route::get('/feedbacks', 'index')->name('feedback');
 
 });
-Route::controller(TeacherController::class)->group(function () {
-    Route::get('/teacher', 'index')->name('teacher');
 
+
+Route::middleware(['web'])->controller(TeacherController::class)->group(function () {
+    Route::get('/teacher', 'index')->name('teacher');
+    Route::post('/teacher', 'store')->name('teacher.store');
+    // Route::get('/teacher/dashboard', 'dashboard')->name('teacher.dashboard');
+});
+
+
+Route::middleware(['web', 'auth:teacher'])->group(function () {
+    Route::get('/teacher/dashboard', [TeacherController::class, 'dashboard'])->name('teacher.dashboard');
 });
 Route::controller(CrController::class)->group(function () {
     Route::get('/cr', 'index')->name('cr');
-
+    Route::post('/cr', 'store')->name('cr.store');
 });
+
 Route::controller(ApplicationController::class)->group(function () {
     Route::get('/applications', 'index')->name('applications');
 

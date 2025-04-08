@@ -11,25 +11,26 @@
             Teacher created successfully!
         </div>
 
-        <form id="teacherForm">
-            <!-- Input Fields in a Row -->
+        <form id="teacherForm" action="{{ route('teacher.store') }}" method="POST">
+            @csrf
+
             <div class="flex space-x-4">
                 <!-- Teacher Name -->
                 <div class="w-1/4">
                     <label class="block text-gray-700 font-medium mb-2" for="name">Teacher Name</label>
-                    <input type="text" id="name" class="w-full border-gray-300 rounded-md shadow-sm p-2 focus:ring focus:ring-indigo-200 focus:border-indigo-300" required>
+                    <input type="text" id="name" name="name"  class="w-full border-gray-300 rounded-md shadow-sm p-2 focus:ring focus:ring-indigo-200 focus:border-indigo-300" required>
                 </div>
 
                 <!-- Teacher Email -->
                 <div class="w-1/4">
                     <label class="block text-gray-700 font-medium mb-2" for="email">Email</label>
-                    <input type="email" id="email" class="w-full border-gray-300 rounded-md shadow-sm p-2 focus:ring focus:ring-indigo-200 focus:border-indigo-300" required>
+                    <input type="email" id="email" name="email" class="w-full border-gray-300 rounded-md shadow-sm p-2 focus:ring focus:ring-indigo-200 focus:border-indigo-300" required>
                 </div>
 
                 <!-- Teacher Password -->
                 <div class="w-1/4">
                     <label class="block text-gray-700 font-medium mb-2" for="password">Password</label>
-                    <input type="password" id="password" class="w-full border-gray-300 rounded-md shadow-sm p-2 focus:ring focus:ring-indigo-200 focus:border-indigo-300" required>
+                    <input type="password" id="password" name="password" class="w-full border-gray-300 rounded-md shadow-sm p-2 focus:ring focus:ring-indigo-200 focus:border-indigo-300" required>
                 </div>
 
                 <!-- Show Password Checkbox -->
@@ -60,8 +61,17 @@
                 </tr>
             </thead>
             <tbody id="teacherList">
-                <!-- Newly added teachers will be displayed here -->
+                @php $i = 1; @endphp
+                @foreach ($teachers as $teacher)
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2">{{ $i++ }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $teacher->name }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $teacher->email }}</td>
+                        <td class="border border-gray-300 px-4 py-2">********</td> <!-- Never show actual passwords -->
+                    </tr>
+                @endforeach
             </tbody>
+
         </table>
     </div>
 
@@ -69,8 +79,6 @@
     <script>
         let teacherCount = 0; // Serial number counter
 
-        document.getElementById('teacherForm').addEventListener('submit', function(event) {
-            event.preventDefault();
 
             // Get input values
             let name = document.getElementById('name').value.trim();

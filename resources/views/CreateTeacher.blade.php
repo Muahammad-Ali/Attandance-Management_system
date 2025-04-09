@@ -1,127 +1,110 @@
 <x-master-layout>
     <!-- Page Header -->
-    <div class="mb-8">
-        <h1 class="text-2xl font-bold text-gray-800">Create Teacher</h1>
+    <div class="mb-8 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Create Teacher</h1>
     </div>
 
     <!-- Teacher Registration Form -->
-    <div class="bg-white p-6 rounded-lg shadow-md w-3/4 mx-auto">
+    <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg max-w-5xl mx-auto transition-all duration-300">
         <!-- Success Message -->
-        <div id="successMessage" class="hidden bg-green-100 text-green-800 p-3 rounded-md mb-4 text-center">
-            Teacher created successfully!
+        <div id="successMessage" class="hidden bg-green-100 text-green-800 p-4 rounded-lg mb-4 text-center">
+            🎉 Teacher created successfully!
         </div>
 
-        <form id="teacherForm" action="{{ route('teacher.store') }}" method="POST">
+        <form id="teacherForm" action="{{ route('teacher.store') }}" method="POST" class="space-y-6">
             @csrf
-
-            <div class="flex space-x-4">
-                <!-- Teacher Name -->
-                <div class="w-1/4">
-                    <label class="block text-gray-700 font-medium mb-2" for="name">Teacher Name</label>
-                    <input type="text" id="name" name="name"  class="w-full border-gray-300 rounded-md shadow-sm p-2 focus:ring focus:ring-indigo-200 focus:border-indigo-300" required>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1" for="name">Teacher Name</label>
+                    <input type="text" id="name" name="name" required
+                        class="w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400">
                 </div>
 
-                <!-- Teacher Email -->
-                <div class="w-1/4">
-                    <label class="block text-gray-700 font-medium mb-2" for="email">Email</label>
-                    <input type="email" id="email" name="email" class="w-full border-gray-300 rounded-md shadow-sm p-2 focus:ring focus:ring-indigo-200 focus:border-indigo-300" required>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1" for="email">Email</label>
+                    <input type="email" id="email" name="email" required
+                        class="w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400">
                 </div>
 
-                <!-- Teacher Password -->
-                <div class="w-1/4">
-                    <label class="block text-gray-700 font-medium mb-2" for="password">Password</label>
-                    <input type="password" id="password" name="password" class="w-full border-gray-300 rounded-md shadow-sm p-2 focus:ring focus:ring-indigo-200 focus:border-indigo-300" required>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1" for="password">Password</label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400">
                 </div>
-
-                <!-- Show Password Checkbox -->
-                {{-- <div class="w-1/4 flex items-end">
-                    <input type="checkbox" id="showPassword" class="mr-2">
-                    <label for="showPassword" class="text-gray-700">Show Password</label>
-                </div> --}}
             </div>
 
-            <!-- Submit Button -->
-            <div class="mt-4 text-center">
-                <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">Create Teacher</button>
+            <div class="text-center pt-4">
+                <button type="submit"
+                    class="bg-indigo-600 text-white px-8 py-3 rounded-md shadow-md hover:bg-indigo-700 transition-transform transform hover:scale-105">
+                    Create Teacher
+                </button>
             </div>
         </form>
     </div>
 
     <!-- Teacher List Table -->
-    <div class="mt-8 bg-white p-6 rounded-lg shadow-md w-3/4 mx-auto">
-        <h2 class="text-xl font-bold text-gray-800 mb-4">Teacher List</h2>
+    <div class="mt-10 bg-white p-6 sm:p-8 rounded-xl shadow-lg max-w-5xl mx-auto overflow-x-auto">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Teacher List</h2>
 
-        <table class="w-full border-collapse border border-gray-300">
-            <thead>
-                <tr class="bg-gray-100">
-                    <th class="border border-gray-300 px-4 py-2 text-left">S.No</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Teacher Name</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Email</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Password</th>
+        <table class="min-w-full border border-gray-300 text-base">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="border px-6 py-3 text-left">S.No</th>
+                    <th class="border px-6 py-3 text-left">Teacher Name</th>
+                    <th class="border px-6 py-3 text-left">Email</th>
+                    <th class="border px-6 py-3 text-left">Password</th>
                 </tr>
             </thead>
             <tbody id="teacherList">
                 @php $i = 1; @endphp
                 @foreach ($teachers as $teacher)
-                    <tr>
-                        <td class="border border-gray-300 px-4 py-2">{{ $i++ }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $teacher->name }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $teacher->email }}</td>
-                        <td class="border border-gray-300 px-4 py-2">********</td> <!-- Never show actual passwords -->
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="border px-6 py-3">{{ $i++ }}</td>
+                        <td class="border px-6 py-3">{{ $teacher->name }}</td>
+                        <td class="border px-6 py-3">{{ $teacher->email }}</td>
+                        <td class="border px-6 py-3">********</td> <!-- Secure by design -->
                     </tr>
                 @endforeach
             </tbody>
-
         </table>
     </div>
 
-    <!-- JavaScript for Handling Form Submission -->
+    <!-- JavaScript to Simulate Adding Teacher (optional enhancement) -->
     <script>
-        let teacherCount = 0; // Serial number counter
 
 
-            // Get input values
-            let name = document.getElementById('name').value.trim();
-            let email = document.getElementById('email').value.trim();
-            let password = document.getElementById('password').value.trim();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
 
-            if (name === "" || email === "" || password === "") {
-                alert("Please fill in all fields.");
+            if (!name || !email || !password) {
+                alert('Please fill in all fields.');
                 return;
             }
 
-            // Increment serial number
-            teacherCount++;
+            const tableBody = document.getElementById('teacherList');
+            const rowCount = tableBody.rows.length + 1;
 
-            // Add new teacher to the list
-            let tableBody = document.getElementById('teacherList');
-            let newRow = document.createElement('tr');
+            const newRow = document.createElement('tr');
+            newRow.classList.add('opacity-0', 'transition-opacity', 'duration-500');
             newRow.innerHTML = `
-                <td class="border border-gray-300 px-4 py-2">${teacherCount}</td>
-                <td class="border border-gray-300 px-4 py-2">${name}</td>
-                <td class="border border-gray-300 px-4 py-2">${email}</td>
-                <td class="border border-gray-300 px-4 py-2">${password}</td>
+                <td class="border px-6 py-3">${rowCount}</td>
+                <td class="border px-6 py-3">${name}</td>
+                <td class="border px-6 py-3">${email}</td>
+                <td class="border px-6 py-3">********</td>
             `;
             tableBody.appendChild(newRow);
 
-            // Show success message
+            setTimeout(() => newRow.classList.remove('opacity-0'), 100);
+
             document.getElementById('successMessage').classList.remove('hidden');
 
-            // Clear Input Fields
-            document.getElementById('name').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
+            // Clear inputs
+            this.reset();
 
-            // Hide success message after 3 seconds
             setTimeout(() => {
                 document.getElementById('successMessage').classList.add('hidden');
             }, 3000);
-        });
-
-        // Show/Hide Password
-        document.getElementById('showPassword').addEventListener('change', function() {
-            let passwordField = document.getElementById('password');
-            passwordField.type = this.checked ? "text" : "password";
-        });
+        
     </script>
 </x-master-layout>

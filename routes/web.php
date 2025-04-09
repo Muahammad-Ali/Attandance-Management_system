@@ -52,9 +52,8 @@ Route::controller(ApplicationController::class)->group(function () {
 });
 Route::controller(SubjectController::class)->group(function () {
     Route::get('/Subject', 'index')->name('subject');
-
+    Route::post('/Subject', 'store')->name('subject.store');
 });
-
 
 Route::controller(EmployeeController::class)->group(function () {
     Route::get('/home', 'index')->name('dashboard');

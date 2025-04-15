@@ -96,7 +96,9 @@
     <script>
         let crCount = {{ count($crs) }};
 
-
+        document.getElementById('crForm').addEventListener('submit', function(e) {
+            // Don't prevent default as we want the form to submit normally
+            // This is just to update the table preview
 
             let cr_name = document.getElementById('cr_name').value.trim();
             let cr_email = document.getElementById('cr_email').value.trim();
@@ -105,32 +107,10 @@
             let semester = document.getElementById('semester').value.trim();
 
             if (!cr_name || !cr_email || !reg_no || !section || !semester) {
-                alert("Please fill in all fields.");
-                return;
+                return; // Let the HTML validation handle this
             }
 
-            crCount++;
-
-            const tableBody = document.getElementById('crList');
-            const newRow = document.createElement('tr');
-            newRow.classList.add('opacity-0', 'transition-opacity', 'duration-500');
-            newRow.innerHTML = `
-                <td class="border px-6 py-3">${crCount}</td>
-                <td class="border px-6 py-3">${cr_name}</td>
-                <td class="border px-6 py-3">${cr_email}</td>
-                <td class="border px-6 py-3">${reg_no}</td>
-                <td class="border px-6 py-3">${section}</td>
-                <td class="border px-6 py-3">${semester}</td>
-            `;
-            tableBody.appendChild(newRow);
-
-            setTimeout(() => newRow.classList.remove('opacity-0'), 100);
-
-            // Optional: success animation/notification
-            alert("CR added!");
-
-            // Reset Form
-            document.getElementById('crForm').reset();
-      
+            // Preview will be shown after redirect with success message
+        });
     </script>
 </x-master-layout>

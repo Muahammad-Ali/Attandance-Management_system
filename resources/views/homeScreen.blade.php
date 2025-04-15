@@ -55,7 +55,7 @@
 
     .chairman-section {
         text-align: center;
-        padding: 40px;
+        padding: 20px;
         animation: fadeInUp 1.5s ease-in-out;
     }
 
@@ -97,7 +97,7 @@
         <img src="{{ asset('images/logo.jpg') }}" alt="Department Logo" width="80">
     </div>
     <div>
-        <a href="{{ route('login') }}" class="btn btn-primary btn-custom ">Login</a>
+        <a href="{{ route('login') }}" class=" btn btn-secondary btn-custom ">Login</a>
         <a href="{{ route('register') }}" class="btn btn-success btn-custom ">Sign Up</a>
     </div>
 </header>

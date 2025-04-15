@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('crs', function (Blueprint $table) {
-            $table->string('password');
+        Schema::table('subjects', function (Blueprint $table) {
+            $table->foreign('semester_id')->references('id')->on('semesters')->onDelete('cascade');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('crs', function (Blueprint $table) {
-            //
+        Schema::table('subjects', function (Blueprint $table) {
+            $table->dropForeign(['semester_id']);
         });
     }
 };

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('reg_no');
             $table->string('section');
             $table->string('semester');
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
 

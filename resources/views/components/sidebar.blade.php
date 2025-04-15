@@ -119,6 +119,41 @@
                     <a class="text-black" href="{{ route('subject') }}">Subject</a>
 
                 </div>
+
+                <!-- Timetable Management Section -->
+                <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
+                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
+                            fill="#99A1B7" />
+                    </svg>
+
+                    <a class="text-black" href="{{ route('departments.index') }}">Departments</a>
+                </div>
+
+                <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
+                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
+                            fill="#99A1B7" />
+                    </svg>
+
+                    <a class="text-black" href="{{ route('semesters.index') }}">Semesters</a>
+                </div>
+
+                <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
+                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
+                            fill="#99A1B7" />
+                    </svg>
+
+                    <a class="text-black" href="{{ route('timetables.index') }}">Timetables</a>
+                </div>
+                <!-- End Timetable Management Section -->
             </div>
 
 

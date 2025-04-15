@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Teacher;
 use App\Models\Cr;
 use App\Models\AssignedSubject;
+use Illuminate\Support\Facades\Auth;
+
 class SubjectController extends Controller
 {
 
@@ -39,5 +41,15 @@ class SubjectController extends Controller
 
         return redirect()->back()->with('success', 'Subject assigned successfully!');
     }
+
+
+    public function mySubjects()
+{
+    $teacher = Auth::guard('teacher')->user(); // Get logged-in teacher
+    $assignedSubjects = $teacher->assignedSubjects()->with('cr')->get(); // Get assigned subjects
+
+    return view('Teacher.AssignSubjects', compact('assignedSubjects', 'teacher'));
+}
+
 
 }

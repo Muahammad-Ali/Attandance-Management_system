@@ -5,6 +5,7 @@ use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+
 class TeacherController extends Controller
 {
     public function index(){
@@ -35,5 +36,6 @@ public function dashboard()
 {
     return view('teacherDashboard');
 }
+
 
 }

@@ -27,7 +27,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string'],
             'password' => ['required', 'string'],
             'role' => ['required', 'string', 'in:admin,teacher,cr,staff_advisor'],
         ];
@@ -40,29 +40,36 @@ class LoginRequest extends FormRequest
      * @throws \Illuminate\Validation\ValidationException
      */
     public function authenticate(): void
-{
-    $this->ensureIsNotRateLimited();
+    {
+        $this->ensureIsNotRateLimited();
 
-    $role = $this->input('role');
+        $role = $this->input('role');
+        $email = $this->input('email');
+        $password = $this->input('password');
 
-    $guard = match ($role) {
-        'teacher' => 'teacher',
-        'admin' => 'web', // You can customize this if needed
-        'cr' => 'cr',
-        'staff_advisor' => 'web',
-        default => 'web',
-    };
+        // Prepare credentials based on role
+        if ($role === 'cr') {
+            $credentials = [
+                'cr_email' => $email,
+                'password' => $password
+            ];
+        } else {
+            $credentials = [
+                'email' => $email,
+                'password' => $password
+            ];
+        }
 
-    if (! Auth::guard($guard)->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-        RateLimiter::hit($this->throttleKey());
+        if (! Auth::guard($role)->attempt($credentials, $this->boolean('remember'))) {
+            RateLimiter::hit($this->throttleKey());
 
-        throw ValidationException::withMessages([
-            'email' => trans('auth.failed'),
-        ]);
+            throw ValidationException::withMessages([
+                'email' => trans('auth.failed'),
+            ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
     }
-
-    RateLimiter::clear($this->throttleKey());
-}
 
     /**
      * Ensure the login request is not rate limited.

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Cr;
+use Illuminate\Support\Facades\Auth;
 
 class CrController extends Controller
 {
@@ -28,5 +29,21 @@ class CrController extends Controller
 
         Cr::create($validated);
         return redirect()->back()->with('success', 'CR created successfully!');
+    }
+    
+    public function dashboard()
+    {
+        $cr = Auth::guard('cr')->user();
+        
+        // Eager load semesters with their relationships
+        if ($cr) {
+            $cr->load([
+                'semesters.department', 
+                'semesters.timetables.subject', 
+                'semesters.timetables.teacher'
+            ]);
+        }
+        
+        return view('crDashboard', compact('cr'));
     }
 }

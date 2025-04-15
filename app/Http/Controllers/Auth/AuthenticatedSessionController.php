@@ -24,32 +24,48 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
-
-        $request->session()->regenerate();
-
         $role = $request->input('role');
+        
+        // Prepare credentials based on role
+        if ($role === 'cr') {
+            $credentials = [
+                'cr_email' => $request->input('email'),
+                'password' => $request->input('password')
+            ];
+        } else {
+            $credentials = [
+                'email' => $request->input('email'),
+                'password' => $request->input('password')
+            ];
+        }
 
-        return match ($role) {
-            'teacher' => redirect()->intended(route('teacher.dashboard')),
-            'student' => redirect()->intended(route('student.dashboard')),
-            'cr' => redirect()->intended(route('cr.dashboard')),
-            default => redirect()->intended(route('dashboard')),
-        };
+        // Try to authenticate with the selected guard
+        if (Auth::guard($role)->attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+            
+            return match ($role) {
+                'teacher' => redirect()->intended(route('teacher.dashboard')),
+                'cr' => redirect()->intended(route('cr.dashboard')),
+                'admin' => redirect()->intended(route('admin.dashboard')),
+                'web' => redirect()->intended(route('dashboard')),
+                default => redirect()->intended(route('dashboard')),
+            };
+        }
+
+        // If authentication fails, redirect back with error
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
-
 
     /**
      * Destroy an authenticated session.
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
-
+        Auth::logout();
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
-
         return redirect('/');
     }
 }

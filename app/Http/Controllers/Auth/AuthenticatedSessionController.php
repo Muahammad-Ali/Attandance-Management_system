@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -24,38 +25,20 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $role = $request->input('role');
+        // This will handle the authentication
+        $request->authenticate();
+
+        // After authentication, the user is logged in
+        $request->session()->regenerate();
         
-        // Prepare credentials based on role
-        if ($role === 'cr') {
-            $credentials = [
-                'cr_email' => $request->input('email'),
-                'password' => $request->input('password')
-            ];
-        } else {
-            $credentials = [
-                'email' => $request->input('email'),
-                'password' => $request->input('password')
-            ];
-        }
-
-        // Try to authenticate with the selected guard
-        if (Auth::guard($role)->attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-            
-            return match ($role) {
-                'teacher' => redirect()->intended(route('teacher.dashboard')),
-                'cr' => redirect()->intended(route('cr.dashboard')),
-                'admin' => redirect()->intended(route('admin.dashboard')),
-                'web' => redirect()->intended(route('dashboard')),
-                default => redirect()->intended(route('dashboard')),
-            };
-        }
-
-        // If authentication fails, redirect back with error
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        // Redirect based on role
+        $role = $request->input('role');
+        return match ($role) {
+            'teacher' => redirect()->intended(route('teacher.dashboard')),
+            'cr' => redirect()->intended(route('cr.dashboard')),
+            'admin' => redirect()->intended(route('admin.dashboard')),
+            default => redirect()->intended(route('dashboard')),
+        };
     }
 
     /**
@@ -63,7 +46,15 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::logout();
+        // Determine which guard to use for logout
+        if (Auth::guard('teacher')->check()) {
+            Auth::guard('teacher')->logout();
+        } elseif (Auth::guard('cr')->check()) {
+            Auth::guard('cr')->logout();
+        } else {
+            Auth::logout();
+        }
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');

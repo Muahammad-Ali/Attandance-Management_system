@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -36,18 +37,33 @@ class RegisteredUserController extends Controller
             'role' => ['required', 'string', 'in:admin,student,staff_advisor'],
         ]);
         
-
+        // Create user record
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'admin',
+            'role' => $request->role,
         ]);
+        
+        // Make sure the admin role exists
+        if (!Role::where('name', 'admin')->exists()) {
+            Role::create(['name' => 'admin', 'guard_name' => 'web']);
+        }
+        
+        // Assign the role
+        if ($request->role === 'admin') {
+            $user->assignRole('admin');
+        }
 
         event(new Registered($user));
 
         Auth::login($user);
 
+        // Redirect based on role
+        if ($request->role === 'admin') {
+            return redirect(route('admin.dashboard', absolute: false));
+        }
+        
         return redirect(route('dashboard', absolute: false));
     }
 }

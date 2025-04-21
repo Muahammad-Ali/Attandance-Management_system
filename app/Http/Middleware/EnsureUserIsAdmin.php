@@ -16,7 +16,8 @@ class EnsureUserIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::guard('admin')->check()) {
+        // Make sure the user is logged in and has the admin role
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
             return redirect('/login')->with('error', 'You must be logged in as an admin to access this page.');
         }
 

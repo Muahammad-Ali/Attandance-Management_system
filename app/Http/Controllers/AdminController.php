@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Teacher;
 use App\Models\Cr;
 use App\Models\Subject;
+use App\Models\Attendance;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -15,11 +17,12 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        // Get counts for dashboard
-        $teacherCount = Teacher::count();
-        $crCount = Cr::count();
-        $subjectCount = Subject::count();
-        
-        return view('admin.dashboard', compact('teacherCount', 'crCount', 'subjectCount'));
+        // Check if user is admin
+        if (Auth::check() && Auth::user()->role !== 'admin') {
+            return redirect('/')->with('error', 'You must be an admin to access this page.');
+        }
+
+
+        return view('admin.dashboard', );
     }
 }

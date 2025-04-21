@@ -47,28 +47,51 @@ class LoginRequest extends FormRequest
         $email = $this->input('email');
         $password = $this->input('password');
 
-        // Prepare credentials based on role
-        if ($role === 'cr') {
+        // Admin authentication uses the web guard
+        if ($role === 'admin') {
+            if (Auth::attempt(['email' => $email, 'password' => $password, 'role' => 'admin'], $this->boolean('remember'))) {
+                RateLimiter::clear($this->throttleKey());
+                return;
+            }
+        } 
+        // CR authentication
+        else if ($role === 'cr') {
             $credentials = [
                 'cr_email' => $email,
                 'password' => $password
             ];
-        } else {
+            
+            if (Auth::guard('cr')->attempt($credentials, $this->boolean('remember'))) {
+                RateLimiter::clear($this->throttleKey());
+                return;
+            }
+        }
+        // Teacher authentication
+        else if ($role === 'teacher') {
             $credentials = [
                 'email' => $email,
                 'password' => $password
             ];
+            
+            if (Auth::guard('teacher')->attempt($credentials, $this->boolean('remember'))) {
+                RateLimiter::clear($this->throttleKey());
+                return;
+            }
+        }
+        // Default web authentication
+        else {
+            if (Auth::attempt(['email' => $email, 'password' => $password], $this->boolean('remember'))) {
+                RateLimiter::clear($this->throttleKey());
+                return;
+            }
         }
 
-        if (! Auth::guard($role)->attempt($credentials, $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        // Authentication failed
+        RateLimiter::hit($this->throttleKey());
 
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
-        }
-
-        RateLimiter::clear($this->throttleKey());
+        throw ValidationException::withMessages([
+            'email' => trans('auth.failed'),
+        ]);
     }
 
     /**

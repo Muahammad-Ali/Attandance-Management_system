@@ -2,11 +2,11 @@
     <!-- Main Content Area -->
     <main>
         <div class="mb-8">
-            <h1 class="text-2xl font-bold text-gray-800">Welcome to dashboard !</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Welcome to dashboard!</h1>
         </div>
 
         <div class="grid grid-cols-1 gap-4 mb-8 md:grid-cols-3">
-            <!-- Box 1 -->
+            <!-- Box 1: Present Today -->
             <div class="p-4 bg-white border rounded-lg shadow-xl border-folly h-36">
                 <div>
                     <i class="flex items-center justify-center mt-0 text-white rounded-md bg-folly w-9 h-9">
@@ -17,11 +17,12 @@
                                 fill="white" />
                         </svg>
                     </i>
-                    <h1 class="mt-4 text-2xl font-extrabold">35</h1>
+                    <h1 class="mt-4 text-2xl font-extrabold">{{ $todayStats['present'] }}</h1>
                     <p>Present/Today</p>
                 </div>
             </div>
-            <!-- Box 2 -->
+            
+            <!-- Box 2: Absent Today -->
             <div class="p-4 bg-white border rounded-lg shadow-xl border-folly h-36">
                 <div class="">
                     <i class="flex items-center justify-center text-white rounded-md bg-folly w-9 h-9">
@@ -32,11 +33,12 @@
                                 fill="white" />
                         </svg>
                     </i>
-                    <h1 class="mt-4 text-2xl font-extrabold">07</h1>
+                    <h1 class="mt-4 text-2xl font-extrabold">{{ $todayStats['absent'] }}</h1>
                     <p>Absent/Today</p>
                 </div>
             </div>
-            <!-- Box 3 -->
+            
+            <!-- Box 3: Monthly Attendance -->
             <div class="p-4 bg-white border rounded-lg shadow-xl border-folly h-36">
                 <div class="">
                     <i class="flex items-center justify-center text-white rounded-md bg-folly w-9 h-9">
@@ -47,22 +49,140 @@
                                 fill="white" />
                         </svg>
                     </i>
-                    <h1 class="mt-4 text-2xl font-extrabold">21</h1>
+                    <h1 class="mt-4 text-2xl font-extrabold">{{ $monthlyStats['present'] + $monthlyStats['late'] }}</h1>
                     <p>Attendance/This Month</p>
                 </div>
             </div>
-
         </div>
 
+        <!-- Dashboard Grid -->
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 gap-4 md:col-span-1">
+                <!-- Teacher Count -->
+                <div class="p-4 bg-white rounded-lg shadow">
+                    <h3 class="text-lg font-semibold text-gray-700">Teachers</h3>
+                    <p class="text-3xl font-bold text-blue-500">{{ $teacherCount }}</p>
+                    <a href="{{ route('teacher') }}" class="text-sm text-blue-600 hover:underline">Manage Teachers</a>
+                </div>
+                
+                <!-- CR Count -->
+                <div class="p-4 bg-white rounded-lg shadow">
+                    <h3 class="text-lg font-semibold text-gray-700">Class Representatives</h3>
+                    <p class="text-3xl font-bold text-green-500">{{ $crCount }}</p>
+                    <a href="{{ route('cr') }}" class="text-sm text-green-600 hover:underline">Manage CRs</a>
+                </div>
+                
+                <!-- Subject Count -->
+                <div class="p-4 bg-white rounded-lg shadow">
+                    <h3 class="text-lg font-semibold text-gray-700">Subjects</h3>
+                    <p class="text-3xl font-bold text-purple-500">{{ $subjectCount }}</p>
+                    <a href="{{ route('subject') }}" class="text-sm text-purple-600 hover:underline">Manage Subjects</a>
+                </div>
+            </div>
+            
+            <!-- Recent Attendance Table -->
+            <div class="p-4 bg-white rounded-lg shadow md:col-span-2">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Recent Teacher Attendance</h2>
+                    <a href="{{ route('admin.attendance.index') }}" class="text-sm text-indigo-600 hover:underline">View All</a>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-2">Teacher</th>
+                                <th class="px-4 py-2">Subject</th>
+                                <th class="px-4 py-2">Date</th>
+                                <th class="px-4 py-2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($recentAttendances as $attendance)
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="px-4 py-3">{{ $attendance->teacher->name }}</td>
+                                <td class="px-4 py-3">{{ $attendance->subject->subject_name }}</td>
+                                <td class="px-4 py-3">{{ $attendance->date->format('M d, Y') }}</td>
+                                <td class="px-4 py-3">
+                                    @if($attendance->status == 'present')
+                                        <span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">Present</span>
+                                    @elseif($attendance->status == 'absent')
+                                        <span class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded-full">Absent</span>
+                                    @else
+                                        <span class="px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-100 rounded-full">Late</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="px-4 py-3 text-center text-gray-500">No attendance records found</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
         <!-- Bar Chart Section -->
-        <div class="p-6 mb-8 bg-white border rounded-lg shadow-lg">
-            <h2 class="mb-4 text-xl font-semibold text-gray-700">Daily Meal Count</h2>
+        <div class="p-6 mt-6 mb-8 bg-white border rounded-lg shadow-lg">
+            <h2 class="mb-4 text-xl font-semibold text-gray-700">Monthly Attendance Overview</h2>
             <canvas id="myBarChart" width="200" height="50"></canvas>
         </div>
-
-
     </main>
-
-
 </x-master-layout>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('myBarChart').getContext('2d');
+    
+    // Sample data (replace with actual data from your backend)
+    const data = {
+        labels: ['Present', 'Absent', 'Late'],
+        datasets: [{
+            label: 'This Month',
+            data: [
+                {{ $monthlyStats['present'] }}, 
+                {{ $monthlyStats['absent'] }}, 
+                {{ $monthlyStats['late'] }}
+            ],
+            backgroundColor: [
+                'rgba(52, 211, 153, 0.7)',
+                'rgba(239, 68, 68, 0.7)',
+                'rgba(251, 191, 36, 0.7)'
+            ],
+            borderColor: [
+                'rgb(52, 211, 153)',
+                'rgb(239, 68, 68)',
+                'rgb(251, 191, 36)'
+            ],
+            borderWidth: 1
+        }]
+    };
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            },
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
+    });
+});
+</script>
+@endpush

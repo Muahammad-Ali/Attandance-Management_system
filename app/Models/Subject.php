@@ -36,4 +36,12 @@ class Subject extends Model
     {
         return $this->hasMany(SubjectFeedback::class);
     }
+    
+    /**
+     * Get the teacher attendance records for this subject
+     */
+    public function teacherAttendances()
+    {
+        return $this->hasMany(TeacherAttendance::class);
+    }
 } 

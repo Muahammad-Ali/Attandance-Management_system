@@ -43,7 +43,7 @@
                     <div class="flex items-center ml-6 space-x-1">
                         <LayoutDashboard />
 
-                        <a href="{{ route('dashboard') }}" class="flex items-center py-2 font-semibold text-gray-500 rounded-lg">
+                        <a href="{{ route('admin.dashboard') }}" class="flex items-center py-2 font-semibold text-gray-500 rounded-lg">
                             Dashboard
                         </a>
                     </div>

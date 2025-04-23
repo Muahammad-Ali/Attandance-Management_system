@@ -34,24 +34,7 @@
 
                         <div class="row mb-4">
                             <div class="col-md-6 mb-3">
-                                <label for="teacher_id" class="form-label fw-bold">Teacher</label>
-                                <select id="teacher_id" class="form-control @error('teacher_id') is-invalid @enderror" name="teacher_id" required>
-                                    <option value="">Select Teacher</option>
-                                    @foreach($teachers as $teacher)
-                                        <option value="{{ $teacher->id }}" {{ old('teacher_id') == $teacher->id ? 'selected' : '' }}>
-                                            {{ $teacher->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('teacher_id')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="subject_id" class="form-label fw-bold">Subject</label>
+                                <label for="subject_id" class="form-label fw-bold">Choose Subject & Teacher</label>
                                 <select id="subject_id" class="form-control @error('subject_id') is-invalid @enderror" name="subject_id" required>
                                     <option value="">Select Subject</option>
                                     @foreach($assignedSubjects as $subject)
@@ -62,10 +45,26 @@
                                         {{ old('subject_id') == $subject->id ? 'selected' : '' }}>
                                         {{ $subject->subject_name }} (Teacher: {{ $subject->teacher->name ?? 'N/A' }})
                                     </option>
-                                @endforeach
-
+                                    @endforeach
                                 </select>
                                 @error('subject_id')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="teacher_id" class="form-label fw-bold">Teacher</label>
+                                <select id="teacher_id" class="form-control @error('teacher_id') is-invalid @enderror" name="teacher_id" required>
+                                    <option value="">Select Teacher</option>
+                                    @foreach($teachers as $teacher)
+                                        <option value="{{ $teacher->id }}" {{ old('teacher_id') == $teacher->id ? 'selected' : '' }}>
+                                            {{ $teacher->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('teacher_id')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -255,18 +254,36 @@
             });
         }
 
-        // Update semester when subject changes
+        // Handle subject selection to update teacher and semester
         const subjectSelect = document.getElementById('subject_id');
+        const teacherSelect = document.getElementById('teacher_id');
         const semesterSelect = document.getElementById('semester_id');
-
-        if (subjectSelect && semesterSelect) {
+        
+        if (subjectSelect && teacherSelect && semesterSelect) {
             subjectSelect.addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
+                
+                // Update teacher based on subject selection
+                if (selectedOption && selectedOption.dataset.teacher) {
+                    teacherSelect.value = selectedOption.dataset.teacher;
+                }
+                
+                // Update semester based on subject selection
                 if (selectedOption && selectedOption.dataset.semester) {
-                    semesterSelect.value = selectedOption.dataset.semester;
+                    // Find semester by semester number
+                    const semesterNumber = selectedOption.dataset.semester;
+                    // Try to find a matching semester option
+                    const semesterOptions = semesterSelect.options;
+                    for (let i = 0; i < semesterOptions.length; i++) {
+                        const option = semesterOptions[i];
+                        if (option.text.includes(semesterNumber)) {
+                            semesterSelect.value = option.value;
+                            break;
+                        }
+                    }
                 }
             });
-
+            
             // Trigger change if there's a pre-selected value
             if (subjectSelect.value) {
                 subjectSelect.dispatchEvent(new Event('change'));

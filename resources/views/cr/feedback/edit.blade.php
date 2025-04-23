@@ -1,119 +1,98 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container px-6 mx-auto grid">
-    <div class="flex items-center justify-between my-6">
-        <h2 class="text-2xl font-semibold text-gray-700">
-            Edit Feedback
-        </h2>
-        <a href="{{ route('cr.feedback.index') }}" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-gray-600 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray">
-            <i class="fas fa-arrow-left mr-1"></i> Back to List
+<div class="container mx-auto px-4 py-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">
+            <i class="fas fa-edit mr-2"></i> Edit Feedback
+        </h1>
+        <a href="{{ route('cr.feedback.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md inline-flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Back
         </a>
     </div>
 
-    @if (session('success'))
-    <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
-        <span class="font-medium">Success!</span> {{ session('success') }}
+    @if ($errors->any())
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+        <p class="font-bold">Please fix the following errors:</p>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
     @endif
 
-    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
-        <form action="{{ route('cr.feedback.update', $feedback) }}" method="POST">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <form action="{{ route('cr.feedback.update', $feedback->id) }}" method="POST">
             @csrf
             @method('PUT')
             
-            <div class="grid gap-6 mb-4 md:grid-cols-2">
-                <!-- Subject -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label for="subject_id" class="block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Subject <span class="text-red-500">*</span>
-                    </label>
-                    <select id="subject_id" name="subject_id" class="block w-full mt-1 text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" required>
-                        <option value="">Select subject</option>
-                        @foreach ($subjects as $subject)
-                            <option value="{{ $subject->id }}" {{ old('subject_id', $feedback->subject_id) == $subject->id ? 'selected' : '' }}>
-                                {{ $subject->subject_name }} ({{ $subject->subject_code }})
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('subject_id')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <div class="mb-4">
+                        <label for="subject_id" class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                        <select id="subject_id" name="subject_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                            <option value="">Select Subject</option>
+                            @foreach($subjects as $subject)
+                                <option value="{{ $subject->id }}" {{ old('subject_id', $feedback->subject_id) == $subject->id ? 'selected' : '' }}>
+                                    {{ $subject->subject_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="teacher_id" class="block text-sm font-medium text-gray-700 mb-2">Teacher</label>
+                        <select id="teacher_id" name="teacher_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                            <option value="">Select Teacher</option>
+                            @foreach($teachers as $teacher)
+                                <option value="{{ $teacher->id }}" {{ old('teacher_id', $feedback->teacher_id) == $teacher->id ? 'selected' : '' }}>
+                                    {{ $teacher->teacher_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="semester_id" class="block text-sm font-medium text-gray-700 mb-2">Semester</label>
+                        <select id="semester_id" name="semester_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                            <option value="">Select Semester</option>
+                            @foreach($semesters as $semester)
+                                <option value="{{ $semester->id }}" {{ old('semester_id', $feedback->semester_id) == $semester->id ? 'selected' : '' }}>
+                                    {{ $semester->semester_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="rating" class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                        <select id="rating" name="rating" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                            <option value="">Select Rating</option>
+                            @for ($i = 1; $i <= 5; $i++)
+                                <option value="{{ $i }}" {{ old('rating', $feedback->rating) == $i ? 'selected' : '' }}>
+                                    {{ $i }} - {{ ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'][$i-1] }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
                 </div>
-                
-                <!-- Teacher -->
+
                 <div>
-                    <label for="teacher_id" class="block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Teacher <span class="text-red-500">*</span>
-                    </label>
-                    <select id="teacher_id" name="teacher_id" class="block w-full mt-1 text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" required>
-                        <option value="">Select teacher</option>
-                        @foreach ($teachers as $teacher)
-                            <option value="{{ $teacher->id }}" {{ old('teacher_id', $feedback->teacher_id) == $teacher->id ? 'selected' : '' }}>
-                                {{ $teacher->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('teacher_id')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-                
-                <!-- Semester -->
-                <div>
-                    <label for="semester_id" class="block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Semester <span class="text-red-500">*</span>
-                    </label>
-                    <select id="semester_id" name="semester_id" class="block w-full mt-1 text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" required>
-                        <option value="">Select semester</option>
-                        @foreach ($semesters as $semester)
-                            <option value="{{ $semester->id }}" {{ old('semester_id', $feedback->semester_id) == $semester->id ? 'selected' : '' }}>
-                                {{ $semester->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('semester_id')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-                
-                <!-- Rating -->
-                <div>
-                    <label for="rating" class="block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Rating <span class="text-red-500">*</span>
-                    </label>
-                    <select id="rating" name="rating" class="block w-full mt-1 text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" required>
-                        <option value="">Select rating</option>
-                        @for ($i = 1; $i <= 5; $i++)
-                            <option value="{{ $i }}" {{ old('rating', $feedback->rating) == $i ? 'selected' : '' }}>
-                                {{ $i }} - {{ $i == 1 ? 'Poor' : ($i == 2 ? 'Fair' : ($i == 3 ? 'Good' : ($i == 4 ? 'Very Good' : 'Excellent'))) }}
-                            </option>
-                        @endfor
-                    </select>
-                    @error('rating')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <div class="mb-4">
+                        <label for="comments" class="block text-sm font-medium text-gray-700 mb-2">Comments</label>
+                        <textarea id="comments" name="comments" rows="10" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter your comments here...">{{ old('comments', $feedback->comments) }}</textarea>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Comments -->
-            <div class="mb-4">
-                <label for="comments" class="block text-sm font-medium text-gray-700 dark:text-gray-400">
-                    Comments <span class="text-red-500">*</span>
-                </label>
-                <textarea id="comments" name="comments" rows="4" class="block w-full mt-1 text-sm rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" required>{{ old('comments', $feedback->comments) }}</textarea>
-                @error('comments')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-            
-            <div class="flex justify-end mt-6 space-x-3">
-                <a href="{{ route('cr.feedback.index') }}" class="px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition-colors duration-150 bg-white border border-gray-300 rounded-lg active:bg-gray-100 hover:bg-gray-100 focus:outline-none focus:shadow-outline-gray">
-                    Cancel
-                </a>
-                <button type="submit" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Update Feedback
+
+            <div class="flex space-x-3">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-flex items-center">
+                    <i class="fas fa-save mr-2"></i> Update Feedback
                 </button>
+                <a href="{{ route('cr.feedback.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md inline-flex items-center">
+                    <i class="fas fa-times mr-2"></i> Cancel
+                </a>
             </div>
         </form>
     </div>

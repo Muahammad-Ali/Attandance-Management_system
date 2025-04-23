@@ -1,6 +1,7 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
-@section('content')
+@section('content') --}}
+<x-master-layout>
 <div class="container mx-auto py-6">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-semibold text-gray-900">Semesters</h1>
@@ -71,4 +72,6 @@
         </table>
     </div>
 </div>
-@endsection 
+</x-master-layout>
+
+{{-- @endsection --}}

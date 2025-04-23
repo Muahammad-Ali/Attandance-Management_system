@@ -15,7 +15,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Department Details Card -->
             <div class="bg-white rounded-lg shadow-md p-6 md:col-span-1">
-                <h2 class="text-xl font-semibold mb-4">Department Details</h2>
+                <h2 class="text-xl font-semibold mb-4">Programs Details</h2>
                 <div class="space-y-3">
                     <div>
                         <span class="font-bold">Name:</span>
@@ -45,7 +45,7 @@
                         </a>
                     </div>
                 </div>
-                
+
                 @if($department->semesters->isEmpty())
                     <div class="text-gray-500 text-center py-4">
                         No semesters found for this department.
@@ -53,7 +53,7 @@
                 @else
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         @foreach($department->semesters->sortBy('semester_number') as $semester)
-                            <a href="{{ route('timetables.semester', $semester->id) }}" 
+                            <a href="{{ route('timetables.semester', $semester->id) }}"
                                class="block p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                                 <div class="text-lg font-medium">Semester {{ $semester->semester_number }}</div>
                                 @if($semester->is_active)
@@ -65,4 +65,3 @@
                 @endif
             </div>
         </div>
- 

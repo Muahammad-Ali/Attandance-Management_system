@@ -58,7 +58,7 @@ Route::controller(CrController::class)->group(function () {
 // Add CR Dashboard Route
 Route::middleware(['web', 'auth:cr'])->group(function () {
     Route::get('/cr/dashboard', [CrController::class, 'dashboard'])->name('cr.dashboard');
-    
+
     // Attendance Routes
     Route::get('/cr/attendance', [TeacherAttendanceController::class, 'index'])->name('cr.attendance.index');
     Route::get('/cr/attendance/create', [TeacherAttendanceController::class, 'create'])->name('cr.attendance.create');
@@ -67,7 +67,7 @@ Route::middleware(['web', 'auth:cr'])->group(function () {
     Route::get('/cr/attendance/{attendance}/edit', [TeacherAttendanceController::class, 'edit'])->name('cr.attendance.edit');
     Route::put('/cr/attendance/{attendance}', [TeacherAttendanceController::class, 'update'])->name('cr.attendance.update');
     Route::delete('/cr/attendance/{attendance}', [TeacherAttendanceController::class, 'destroy'])->name('cr.attendance.destroy');
-    
+
     // Feedback Routes
     Route::get('/cr/feedback', [SubjectFeedbackController::class, 'index'])->name('cr.feedback.index');
     Route::get('/cr/feedback/create', [SubjectFeedbackController::class, 'create'])->name('cr.feedback.create');
@@ -88,8 +88,8 @@ Route::controller(SubjectController::class)->group(function () {
     Route::post('/Subject', 'store')->name('subject.store');
 });
 
-Route::controller(EmployeeController::class)->group(function () {
-    Route::get('/home', 'index')->name('dashboard');
+Route::controller(AdminController::class)->group(function () {
+    Route::get('/home', 'dashboard')->name('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');;
 
 // Route::get('/dashboard',  function () {
@@ -106,12 +106,12 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
     // Department routes
     Route::resource('departments', DepartmentController::class);
-    
+
     // Semester routes
     Route::resource('semesters', SemesterController::class);
     Route::get('/semesters/create-bulk', [SemesterController::class, 'createBulk'])->name('semesters.create-bulk');
     Route::post('/semesters/store-bulk', [SemesterController::class, 'storeBulk'])->name('semesters.store-bulk');
-    
+
     // Timetable routes
     Route::get('/timetables', [TimetableController::class, 'index'])->name('timetables.index');
     Route::get('/timetables/semester/{semester}', [TimetableController::class, 'semesterTimetable'])->name('timetables.semester');
@@ -130,14 +130,22 @@ Route::middleware(['auth:teacher'])->group(function () {
 });
 
 // Admin Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    
-    // Attendance Routes
-    Route::get('/admin/attendance', [TeacherAttendanceController::class, 'adminIndex'])->name('admin.attendance.index');
-    
-    // Feedback Routes
-    Route::get('/admin/feedback', [SubjectFeedbackController::class, 'adminIndex'])->name('admin.feedback.index');
+Route::middleware(['auth:admin', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    Route::resource('/teachers', TeacherController::class);
+    Route::resource('/cr', CrController::class);
+    Route::resource('/subjects', SubjectController::class);
+    Route::resource('/semesters', SemesterController::class);
+    Route::get('/feedback', [SubjectFeedbackController::class, 'adminIndex'])->name('feedback.index');
+
+    // Admin Attendance routes
+    Route::get('/attendance', [TeacherAttendanceController::class, 'adminIndex'])->name('attendance.index');
+    Route::get('/attendance/teacher', [TeacherAttendanceController::class, 'adminTeacherAttendance'])->name('attendance.teacher');
+
+    // Profile routes
+    // Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
+    // Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
 });
 
 require __DIR__.'/auth.php';

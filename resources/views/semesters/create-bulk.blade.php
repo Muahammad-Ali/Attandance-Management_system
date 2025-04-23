@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-semibold text-gray-900">Create All Semesters</h1>
         <a href="{{ route('semesters.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-200 active:bg-gray-900 transition">
             Back to Semesters
-        </a>
+        </a>    
     </div>
 
     <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
@@ -72,10 +72,10 @@
 
                 <div id="cr_assignment_section" class="bg-gray-50 p-4 rounded-md {{ old('assign_cr') ? '' : 'hidden' }}">
                     <p class="text-sm text-gray-500 mb-4">You can assign CRs to specific semesters after creation.</p>
-                    
+
                     <div class="mb-4 border-l-4 border-indigo-300 pl-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">For the first semester</label>
-                        
+
                         <div class="mb-4">
                             <label for="cr_selection_type" class="block text-sm font-medium text-gray-700">Select CR for first semester</label>
                             <div class="mt-2 space-x-4">
@@ -191,4 +191,4 @@
         });
     });
 </script>
-@endsection 
+@endsection

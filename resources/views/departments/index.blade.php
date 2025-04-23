@@ -1,9 +1,9 @@
 <x-master-layout>
     <div class="container mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-gray-800">Departments</h1>
+            <h1 class="text-3xl font-bold text-gray-800">Programs</h1>
             <a href="{{ route('departments.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition-colors">
-                Add Department
+                Add Programs
             </a>
         </div>
 
@@ -70,7 +70,7 @@
                     @empty
                         <tr>
                             <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                                No departments found. Start by adding one.
+                                No Programs found. Start by adding one.
                             </td>
                         </tr>
                     @endforelse
@@ -78,4 +78,4 @@
             </table>
         </div>
     </div>
-</x-master-layout> 
+</x-master-layout>

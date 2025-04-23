@@ -69,7 +69,7 @@
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm text-gray-900">
-                                                    {{ \Carbon\Carbon::parse($timetable->start_time)->format('h:i A') }} - 
+                                                    {{ \Carbon\Carbon::parse($timetable->start_time)->format('h:i A') }} -
                                                     {{ \Carbon\Carbon::parse($timetable->end_time)->format('h:i A') }}
                                                 </div>
                                             </td>
@@ -127,7 +127,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const dayTabs = document.querySelectorAll('.day-tab');
             const dayContents = document.querySelectorAll('.day-content');
-            
+
             // Show the first day with content by default
             const firstVisibleDay = document.querySelector('.day-content:not(.hidden)');
             if (firstVisibleDay) {
@@ -135,11 +135,11 @@
                 document.querySelector(`.day-tab[data-day="${day}"]`).classList.add('text-indigo-600', 'border-b-2', 'border-indigo-500');
                 document.querySelector(`.day-tab[data-day="${day}"]`).classList.remove('text-gray-500', 'hover:text-gray-700');
             }
-            
+
             dayTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     const day = tab.getAttribute('data-day');
-                    
+
                     // Hide all content and reset all tabs
                     dayContents.forEach(content => {
                         content.classList.add('hidden');
@@ -148,7 +148,7 @@
                         t.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-500');
                         t.classList.add('text-gray-500', 'hover:text-gray-700');
                     });
-                    
+
                     // Show the selected content and activate the tab
                     document.getElementById(`day-${day}`).classList.remove('hidden');
                     tab.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-500');

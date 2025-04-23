@@ -43,9 +43,10 @@
                     <div class="flex items-center ml-6 space-x-1">
                         <LayoutDashboard />
 
-                        <a href="{{ route('admin.dashboard') }}" class="flex items-center py-2 font-semibold text-gray-500 rounded-lg">
+                        <a href="{{ route('dashboard') }}" class="flex items-center py-2 font-semibold text-gray-500 rounded-lg">
                             Dashboard
                         </a>
+
                     </div>
                     {{-- Daily Meal Count --}}
                     <div class="flex items-center space-x-1 text-slate-500 ml-9">
@@ -129,7 +130,7 @@
                             fill="#99A1B7" />
                     </svg>
 
-                    <a class="text-black" href="{{ route('departments.index') }}">Departments</a>
+                    <a class="text-black" href="{{ route('departments.index') }}">Programs</a>
                 </div>
 
                 <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">

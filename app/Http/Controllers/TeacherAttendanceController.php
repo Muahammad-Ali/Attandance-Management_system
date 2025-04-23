@@ -320,21 +320,102 @@ class TeacherAttendanceController extends Controller
     {
         $query = TeacherAttendance::with(['teacher', 'subject', 'semester', 'recordedBy']);
 
-        if ($request->has('date')) {
+        if ($request->filled('date')) {
             $query->whereDate('date', $request->date);
         }
 
-        if ($request->has('month')) {
+        if ($request->filled('month')) {
             $query->whereMonth('date', Carbon::parse($request->month)->month)
                   ->whereYear('date', Carbon::parse($request->month)->year);
         }
 
-        if ($request->has('status')) {
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
+        }
+
+        if ($request->filled('teacher_id')) {
+            $query->where('teacher_id', $request->teacher_id);
+        }
+
+        $attendances = $query->latest()->paginate(10);
+        $teachers = Teacher::orderBy('name')->get();
+
+        return view('admin.attendance.index', compact('attendances', 'teachers'));
+    }
+
+    public function adminTeacherAttendance(Request $request)
+    {
+        // Get teacher from request or default to first teacher
+        $teacherId = $request->teacher_id ?? Teacher::first()->id ?? null;
+        $teacher = Teacher::with('subjects')->findOrFail($teacherId);
+        
+        $query = TeacherAttendance::where('teacher_id', $teacher->id)
+            ->with(['subject', 'semester']);
+
+        // Filter by month
+        if ($request->filled('month')) {
+            $date = Carbon::parse($request->month);
+            $startOfMonth = $date->copy()->startOfMonth();
+            $endOfMonth = $date->copy()->endOfMonth();
+
+            $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+        } else {
+            // Default to current month if no month is specified
+            $startOfMonth = Carbon::now()->startOfMonth();
+            $endOfMonth = Carbon::now()->endOfMonth();
+
+            $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+        }
+
+        // Filter by subject if specified
+        if ($request->filled('subject_id')) {
+            $query->where('subject_id', $request->subject_id);
         }
 
         $attendances = $query->latest()->paginate(10);
 
-        return view('admin.attendance.index', compact('attendances'));
+        // Get all subjects taught by the teacher
+        $subjects = $teacher->subjects;
+
+        // Calculate attendance stats for the period
+        $totalClasses = $attendances->total();
+        $present = TeacherAttendance::where('teacher_id', $teacher->id)
+            ->where('status', 'present')
+            ->whereBetween('date', [$startOfMonth, $endOfMonth]);
+
+        $absent = TeacherAttendance::where('teacher_id', $teacher->id)
+            ->where('status', 'absent')
+            ->whereBetween('date', [$startOfMonth, $endOfMonth]);
+
+        $late = TeacherAttendance::where('teacher_id', $teacher->id)
+            ->where('status', 'late')
+            ->whereBetween('date', [$startOfMonth, $endOfMonth]);
+
+        // Apply subject filter to stats if specified
+        if ($request->filled('subject_id')) {
+            $present->where('subject_id', $request->subject_id);
+            $absent->where('subject_id', $request->subject_id);
+            $late->where('subject_id', $request->subject_id);
+        }
+
+        $presentCount = $present->count();
+        $absentCount = $absent->count();
+        $lateCount = $late->count();
+
+        // Calculate percentages safely (avoiding division by zero)
+        $stats = [
+            'total' => $totalClasses,
+            'present' => $presentCount,
+            'absent' => $absentCount,
+            'late' => $lateCount,
+            'present_percentage' => $totalClasses > 0 ? round(($presentCount / $totalClasses) * 100, 1) : 0,
+            'absent_percentage' => $totalClasses > 0 ? round(($absentCount / $totalClasses) * 100, 1) : 0,
+            'late_percentage' => $totalClasses > 0 ? round(($lateCount / $totalClasses) * 100, 1) : 0,
+        ];
+
+        // Get all teachers for the dropdown
+        $teachers = Teacher::orderBy('name')->get();
+
+        return view('admin.attendance.teacher', compact('attendances', 'subjects', 'stats', 'teacher', 'teachers'));
     }
 }

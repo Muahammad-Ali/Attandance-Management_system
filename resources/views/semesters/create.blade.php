@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<x-master-layout>
 <div class="container mx-auto py-6">
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold text-gray-900">Create Semester</h1>
@@ -197,4 +195,6 @@
         });
     });
 </script>
-@endsection 
+
+</x-master-layout>
+

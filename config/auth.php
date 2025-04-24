@@ -52,6 +52,14 @@ return [
             'driver' => 'session',
             'provider' => 'crs',
         ],
+        'batchadvisor' => [
+            'driver' => 'session',
+            'provider' => 'batchadvisors',
+        ],
+        'semestercoordinator' => [
+            'driver' => 'session',
+            'provider' => 'semestercoordinators',
+        ],
     ],
 
     /*
@@ -83,6 +91,14 @@ return [
         'crs' => [
             'driver' => 'eloquent',
             'model' => App\Models\Cr::class,
+        ],
+        'batchadvisors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\BatchAdvisor::class,
+        ],
+        'semestercoordinators' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\SemesterCoordinator::class,
         ],
 
         // 'users' => [
@@ -131,6 +147,18 @@ return [
         ],
         'crs' => [
             'provider' => 'crs',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'batchadvisors' => [
+            'provider' => 'batchadvisors',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'semestercoordinators' => [
+            'provider' => 'semestercoordinators',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

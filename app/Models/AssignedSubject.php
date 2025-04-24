@@ -24,4 +24,9 @@ class AssignedSubject extends Model
     {
         return $this->belongsTo(Cr::class);
     }
+    
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
 }

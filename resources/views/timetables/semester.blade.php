@@ -7,7 +7,7 @@
             </div>
             <div class="flex space-x-2">
                 <a href="{{ route('timetables.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors">
-                    Back to Departments
+                    Back to Programs
                 </a>
                 <a href="{{ route('timetables.create', $semester->id) }}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition-colors">
                     Add Class
@@ -157,4 +157,4 @@
             });
         });
     </script>
-</x-master-layout> 
+</x-master-layout>

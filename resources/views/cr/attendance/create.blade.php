@@ -260,29 +260,20 @@
         const semesterSelect = document.getElementById('semester_id');
         
         if (subjectSelect && teacherSelect && semesterSelect) {
-            subjectSelect.addEventListener('change', function() {
-                const selectedOption = this.options[this.selectedIndex];
-                
-                // Update teacher based on subject selection
-                if (selectedOption && selectedOption.dataset.teacher) {
-                    teacherSelect.value = selectedOption.dataset.teacher;
-                }
-                
-                // Update semester based on subject selection
-                if (selectedOption && selectedOption.dataset.semester) {
-                    // Find semester by semester number
-                    const semesterNumber = selectedOption.dataset.semester;
-                    // Try to find a matching semester option
-                    const semesterOptions = semesterSelect.options;
-                    for (let i = 0; i < semesterOptions.length; i++) {
-                        const option = semesterOptions[i];
-                        if (option.text.includes(semesterNumber)) {
-                            semesterSelect.value = option.value;
-                            break;
-                        }
-                    }
-                }
-            });
+        // In the JS code for subject selection
+subjectSelect.addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    
+    // Update teacher based on assigned subject's teacher_id
+    if (selectedOption && selectedOption.dataset.teacher) {
+        teacherSelect.value = selectedOption.dataset.teacher;
+    }
+    
+    // Update semester based on assigned subject's semester
+    if (selectedOption && selectedOption.dataset.semester) {
+        semesterSelect.value = selectedOption.dataset.semester;
+    }
+});
             
             // Trigger change if there's a pre-selected value
             if (subjectSelect.value) {

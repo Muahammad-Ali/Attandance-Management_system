@@ -14,6 +14,8 @@ use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\TeacherAttendanceController;
 use App\Http\Controllers\SubjectFeedbackController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BatchAdvisorController;
+use App\Http\Controllers\SemesterCoordinatorController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -137,6 +139,8 @@ Route::middleware(['auth:admin', 'admin'])->prefix('admin')->name('admin.')->gro
     Route::resource('/cr', CrController::class);
     Route::resource('/subjects', SubjectController::class);
     Route::resource('/semesters', SemesterController::class);
+    Route::resource('/batchadvisors', BatchAdvisorController::class);
+    Route::resource('/semestercoordinators', SemesterCoordinatorController::class);
     Route::get('/feedback', [SubjectFeedbackController::class, 'adminIndex'])->name('feedback.index');
 
     // Admin Attendance routes
@@ -146,6 +150,89 @@ Route::middleware(['auth:admin', 'admin'])->prefix('admin')->name('admin.')->gro
     // Profile routes
     // Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
     // Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
+});
+
+// Batch Advisor Routes
+Route::middleware(['auth'])->group(function () {
+    // Replace resource route with explicit routes
+    Route::get('/batchadvisor', [BatchAdvisorController::class, 'index'])->name('batchadvisor.index');
+    Route::get('/batchadvisor/create', [BatchAdvisorController::class, 'create'])->name('batchadvisor.create');
+    Route::post('/batchadvisor', [BatchAdvisorController::class, 'store'])->name('batchadvisor.store');
+    Route::get('/batchadvisor/{id}', [BatchAdvisorController::class, 'show'])->name('batchadvisor.show');
+    Route::get('/batchadvisor/{id}/edit', [BatchAdvisorController::class, 'edit'])->name('batchadvisor.edit');
+    Route::put('/batchadvisor/{id}', [BatchAdvisorController::class, 'update'])->name('batchadvisor.update');
+    Route::delete('/batchadvisor/{id}', [BatchAdvisorController::class, 'destroy'])->name('batchadvisor.destroy');
+});
+
+// Semester Coordinator Routes
+Route::middleware(['auth'])->group(function () {
+    // Replace resource route with explicit routes
+    Route::get('/semestercoordinator', [SemesterCoordinatorController::class, 'index'])->name('semestercoordinator.index');
+    Route::get('/semestercoordinator/create', [SemesterCoordinatorController::class, 'create'])->name('semestercoordinator.create');
+    Route::post('/semestercoordinator', [SemesterCoordinatorController::class, 'store'])->name('semestercoordinator.store');
+    Route::get('/semestercoordinator/{id}', [SemesterCoordinatorController::class, 'show'])->name('semestercoordinator.show');
+    Route::get('/semestercoordinator/{id}/edit', [SemesterCoordinatorController::class, 'edit'])->name('semestercoordinator.edit');
+    Route::put('/semestercoordinator/{id}', [SemesterCoordinatorController::class, 'update'])->name('semestercoordinator.update');
+    Route::delete('/semestercoordinator/{id}', [SemesterCoordinatorController::class, 'destroy'])->name('semestercoordinator.destroy');
+});
+
+// Batch Advisor Dashboard Route
+Route::middleware(['web', 'auth:batchadvisor'])->group(function () {
+    Route::get('/batchadvisor/dashboard', [BatchAdvisorController::class, 'dashboard'])->name('batchadvisor.dashboard');
+});
+
+// Semester Coordinator Dashboard Route
+Route::middleware(['web', 'auth:semestercoordinator'])->group(function () {
+    Route::get('/semestercoordinator/dashboard', [SemesterCoordinatorController::class, 'dashboard'])->name('semestercoordinator.dashboard');
+});
+
+// Test route to create users
+Route::get('/create-test-users', function() {
+    // Check if department exists, create if not
+    $department = \App\Models\Department::first();
+    if (!$department) {
+        $department = \App\Models\Department::create([
+            'name' => 'Test Department',
+            'code' => 'TEST'
+        ]);
+    }
+    
+    // Check if semester exists, create if not
+    $semester = \App\Models\Semester::first();
+    if (!$semester) {
+        $semester = \App\Models\Semester::create([
+            'name' => 'Test Semester',
+            'department_id' => $department->id
+        ]);
+    }
+    
+    // Create batch advisor
+    $batchAdvisor = \App\Models\BatchAdvisor::updateOrCreate(
+        ['email' => 'batchadvisor@example.com'],
+        [
+            'name' => 'Test Batch Advisor',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'department_id' => $department->id,
+            'batch' => '2024'
+        ]
+    );
+    
+    // Create semester coordinator
+    $semesterCoordinator = \App\Models\SemesterCoordinator::updateOrCreate(
+        ['email' => 'semestercoordinator@example.com'],
+        [
+            'name' => 'Test Semester Coordinator',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'department_id' => $department->id,
+            'semester_id' => $semester->id
+        ]
+    );
+    
+    return [
+        'batchAdvisor' => $batchAdvisor,
+        'semesterCoordinator' => $semesterCoordinator,
+        'message' => 'Test users created successfully. You can now log in with these credentials.'
+    ];
 });
 
 require __DIR__.'/auth.php';

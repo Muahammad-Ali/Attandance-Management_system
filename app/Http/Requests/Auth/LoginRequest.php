@@ -29,7 +29,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'string'],
             'password' => ['required', 'string'],
-            'role' => ['required', 'string', 'in:admin,teacher,cr,staff_advisor'],
+            'role' => ['required', 'string', 'in:admin,teacher,cr,batchadvisor,semestercoordinator'],
         ];
     }
 
@@ -74,6 +74,44 @@ class LoginRequest extends FormRequest
             ];
             
             if (Auth::guard('teacher')->attempt($credentials, $this->boolean('remember'))) {
+                RateLimiter::clear($this->throttleKey());
+                return;
+            }
+        }
+        // Batch Advisor authentication
+        else if ($role === 'batchadvisor') {
+            $credentials = [
+                'email' => $email,
+                'password' => $password
+            ];
+            
+            // Debug log
+            \Log::debug('Attempting batch advisor login', [
+                'email' => $email,
+                'exists' => \App\Models\BatchAdvisor::where('email', $email)->exists(),
+                'email_count' => \App\Models\BatchAdvisor::where('email', $email)->count()
+            ]);
+            
+            if (Auth::guard('batchadvisor')->attempt($credentials, $this->boolean('remember'))) {
+                RateLimiter::clear($this->throttleKey());
+                return;
+            }
+        }
+        // Semester Coordinator authentication
+        else if ($role === 'semestercoordinator') {
+            $credentials = [
+                'email' => $email,
+                'password' => $password
+            ];
+            
+            // Debug log
+            \Log::debug('Attempting semester coordinator login', [
+                'email' => $email,
+                'exists' => \App\Models\SemesterCoordinator::where('email', $email)->exists(),
+                'email_count' => \App\Models\SemesterCoordinator::where('email', $email)->count()
+            ]);
+            
+            if (Auth::guard('semestercoordinator')->attempt($credentials, $this->boolean('remember'))) {
                 RateLimiter::clear($this->throttleKey());
                 return;
             }

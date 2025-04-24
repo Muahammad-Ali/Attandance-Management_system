@@ -38,13 +38,13 @@
                 @enderror
             </div>
 
-            <div class="mb-4">
+            {{-- <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Name (Optional)</label>
                 <input type="text" name="name" id="name" value="{{ old('name') }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                 @error('name')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
-            </div>
+            </div> --}}
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="mb-4">

@@ -37,6 +37,8 @@ class AuthenticatedSessionController extends Controller
             'teacher' => redirect()->intended(route('teacher.dashboard')),
             'cr' => redirect()->intended(route('cr.dashboard')),
             'admin' => redirect()->intended(route('admin.dashboard')),
+            'batchadvisor' => redirect()->intended(route('batchadvisor.dashboard')),
+            'semestercoordinator' => redirect()->intended(route('semestercoordinator.dashboard')),
             default => redirect()->intended(route('dashboard')),
         };
     }
@@ -51,6 +53,10 @@ class AuthenticatedSessionController extends Controller
             Auth::guard('teacher')->logout();
         } elseif (Auth::guard('cr')->check()) {
             Auth::guard('cr')->logout();
+        } elseif (Auth::guard('batchadvisor')->check()) {
+            Auth::guard('batchadvisor')->logout();
+        } elseif (Auth::guard('semestercoordinator')->check()) {
+            Auth::guard('semestercoordinator')->logout();
         } else {
             Auth::logout();
         }

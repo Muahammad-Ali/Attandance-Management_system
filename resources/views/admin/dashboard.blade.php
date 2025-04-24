@@ -21,7 +21,7 @@
                     <p>Present/Today</p>
                 </div>
             </div>
-            
+
             <!-- Box 2: Absent Today -->
             <div class="p-4 bg-white border rounded-lg shadow-xl border-folly h-36">
                 <div class="">
@@ -37,7 +37,7 @@
                     <p>Absent/Today</p>
                 </div>
             </div>
-            
+
             <!-- Box 3: Monthly Attendance -->
             <div class="p-4 bg-white border rounded-lg shadow-xl border-folly h-36">
                 <div class="">
@@ -65,29 +65,43 @@
                     <p class="text-3xl font-bold text-blue-500">{{ $teacherCount }}</p>
                     <a href="{{ route('teacher') }}" class="text-sm text-blue-600 hover:underline">Manage Teachers</a>
                 </div>
-                
+
                 <!-- CR Count -->
                 <div class="p-4 bg-white rounded-lg shadow">
                     <h3 class="text-lg font-semibold text-gray-700">Class Representatives</h3>
                     <p class="text-3xl font-bold text-green-500">{{ $crCount }}</p>
                     <a href="{{ route('cr') }}" class="text-sm text-green-600 hover:underline">Manage CRs</a>
                 </div>
-                
+
                 <!-- Subject Count -->
                 <div class="p-4 bg-white rounded-lg shadow">
                     <h3 class="text-lg font-semibold text-gray-700">Subjects</h3>
                     <p class="text-3xl font-bold text-purple-500">{{ $subjectCount }}</p>
                     <a href="{{ route('subject') }}" class="text-sm text-purple-600 hover:underline">Manage Subjects</a>
                 </div>
+
+                <!-- Batch Advisor Count -->
+                <div class="p-4 bg-white rounded-lg shadow">
+                    <h3 class="text-lg font-semibold text-gray-700">Batch Advisors</h3>
+                    <p class="text-3xl font-bold text-blue-500">{{ $batchAdvisorCount }}</p>
+                    <a href="{{ route('batchadvisor.index') }}" class="text-sm text-blue-600 hover:underline">Manage Batch Advisors</a>
+                </div>
+
+                <!-- Semester Coordinator Count -->
+                <div class="p-4 bg-white rounded-lg shadow">
+                    <h3 class="text-lg font-semibold text-gray-700">Semester Coordinators</h3>
+                    <p class="text-3xl font-bold text-green-500">{{ $semesterCoordinatorCount }}</p>
+                    <a href="{{ route('semestercoordinator.index') }}" class="text-sm text-green-600 hover:underline">Manage Semester Coordinators</a>
+                </div>
             </div>
-            
+
             <!-- Recent Attendance Table -->
             <div class="p-4 bg-white rounded-lg shadow md:col-span-2">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-semibold text-gray-700">Recent Teacher Attendance</h2>
                     <a href="{{ route('admin.attendance.index') }}" class="text-sm text-indigo-600 hover:underline">View All</a>
                 </div>
-                
+
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -102,7 +116,7 @@
                             @forelse($recentAttendances as $attendance)
                             <tr class="border-b hover:bg-gray-50">
                                 <td class="px-4 py-3">{{ $attendance->teacher->name }}</td>
-                                <td class="px-4 py-3">{{ $attendance->subject->subject_name }}</td>
+                                <td class="px-4 py-3">{{ $attendance->assignedSubject->subject_name ?? 'N/A' }}</td>
                                 <td class="px-4 py-3">{{ $attendance->date->format('M d, Y') }}</td>
                                 <td class="px-4 py-3">
                                     @if($attendance->status == 'present')
@@ -138,15 +152,15 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('myBarChart').getContext('2d');
-    
+
     // Sample data (replace with actual data from your backend)
     const data = {
         labels: ['Present', 'Absent', 'Late'],
         datasets: [{
             label: 'This Month',
             data: [
-                {{ $monthlyStats['present'] }}, 
-                {{ $monthlyStats['absent'] }}, 
+                {{ $monthlyStats['present'] }},
+                {{ $monthlyStats['absent'] }},
                 {{ $monthlyStats['late'] }}
             ],
             backgroundColor: [
@@ -162,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
             borderWidth: 1
         }]
     };
-    
+
     new Chart(ctx, {
         type: 'bar',
         data: data,

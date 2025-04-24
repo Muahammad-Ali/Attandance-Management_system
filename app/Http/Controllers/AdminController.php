@@ -26,6 +26,8 @@ class AdminController extends Controller
         $teacherCount = Teacher::count();
         $crCount = Cr::count();
         $subjectCount = Subject::count();
+        $batchAdvisorCount = \App\Models\BatchAdvisor::count();
+        $semesterCoordinatorCount = \App\Models\SemesterCoordinator::count();
         
         // Get today's attendance statistics
         $today = Carbon::today();
@@ -49,7 +51,7 @@ class AdminController extends Controller
         ];
         
         // Get recent attendance entries
-        $recentAttendances = TeacherAttendance::with(['teacher', 'subject', 'semester'])
+        $recentAttendances = TeacherAttendance::with(['teacher', 'assignedSubject', 'semester'])
             ->latest()
             ->take(5)
             ->get();
@@ -58,6 +60,8 @@ class AdminController extends Controller
             'teacherCount', 
             'crCount', 
             'subjectCount', 
+            'batchAdvisorCount',
+            'semesterCoordinatorCount',
             'todayStats', 
             'monthlyStats',
             'recentAttendances'

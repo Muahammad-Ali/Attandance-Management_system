@@ -17,9 +17,9 @@ class TeacherAttendanceController extends Controller
     {
         $cr = Auth::guard('cr')->user();
         $attendances = TeacherAttendance::where('recorded_by', $cr->id)
-            ->with(['teacher', 'subject', 'semester'])
-            ->latest()
-            ->paginate(10);
+    ->with(['teacher', 'assignedSubject', 'semester'])  // Changed from 'subject'
+    ->latest()
+    ->paginate(10);
 
         return view('cr.attendance.index', compact('attendances'));
     }
@@ -130,7 +130,7 @@ class TeacherAttendanceController extends Controller
         }
 
         // Create subjects if none exist
-        if (\App\Models\Subject::count() == 0) {
+        if (\App\Models\AssignedSubject::count() == 0) {
             $semesters = \App\Models\Semester::all();
             $subjects = [
                 ['name' => 'Introduction to Programming', 'code' => 'CS101'],
@@ -143,7 +143,7 @@ class TeacherAttendanceController extends Controller
 
             foreach ($subjects as $index => $subject) {
                 $semesterId = $semesters[min($index, $semesters->count() - 1)]->id;
-                \App\Models\Subject::create([
+                \App\Models\AssignedSubject::create([
                     'subject_name' => $subject['name'],
                     'subject_code' => $subject['code'],
                     'credits' => 3,
@@ -170,7 +170,7 @@ class TeacherAttendanceController extends Controller
             $teacher = \App\Models\Teacher::first();
 
             // Ensure teacher has subjects
-            $subjects = \App\Models\Subject::all();
+            $subjects = \App\Models\AssignedSubject::all();
             foreach ($subjects as $subject) {
                 if (!$teacher->subjects()->where('subject_id', $subject->id)->exists()) {
                     $teacher->subjects()->attach($subject->id);
@@ -183,7 +183,7 @@ class TeacherAttendanceController extends Controller
     {
         $validated = $request->validate([
             'teacher_id' => 'required|exists:teachers,id',
-            'subject_id' => 'required|exists:subjects,id',
+          'subject_id' => 'required|exists:assigned_subjects,id',
             'semester_id' => 'required|exists:semesters,id',
             'date' => 'required|date',
             'day' => 'required|string',
@@ -210,7 +210,7 @@ class TeacherAttendanceController extends Controller
     {
         $cr = Auth::guard('cr')->user();
         $semesters = $cr->semesters;
-        $subjects = Subject::whereIn('semester_id', $semesters->pluck('id'))->get();
+        $subjects = AssignedSubject::whereIn('semester_id', $semesters->pluck('id'))->get();
         $teachers = Teacher::all();
 
         return view('cr.attendance.edit', compact('attendance', 'semesters', 'subjects', 'teachers'));
@@ -220,7 +220,7 @@ class TeacherAttendanceController extends Controller
     {
         $validated = $request->validate([
             'teacher_id' => 'required|exists:teachers,id',
-            'subject_id' => 'required|exists:subjects,id',
+           'subject_id' => 'required|exists:assigned_subjects,id',
             'semester_id' => 'required|exists:semesters,id',
             'date' => 'required|date',
             'day' => 'required|string',

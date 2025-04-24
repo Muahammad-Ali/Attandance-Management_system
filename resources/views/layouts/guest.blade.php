@@ -19,8 +19,8 @@
         }
 
         .header {
-            background-color: white;
-            padding: 15px 40px;
+            background-color: black;
+            padding: 33px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;

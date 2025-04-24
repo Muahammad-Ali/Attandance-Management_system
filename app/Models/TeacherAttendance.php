@@ -11,7 +11,7 @@ class TeacherAttendance extends Model
 
     protected $fillable = [
         'teacher_id',
-        'subject_id',
+        'subject_id', // This should now reference assigned_subjects.id
         'semester_id',
         'date',
         'day',
@@ -37,11 +37,11 @@ class TeacherAttendance extends Model
     }
 
     /**
-     * Get the subject for this attendance record
+     * Get the assigned subject for this attendance record
      */
-    public function subject()
+    public function assignedSubject()
     {
-        return $this->belongsTo(Subject::class);
+        return $this->belongsTo(AssignedSubject::class, 'subject_id');
     }
 
     /**
@@ -59,4 +59,4 @@ class TeacherAttendance extends Model
     {
         return $this->belongsTo(Cr::class, 'recorded_by');
     }
-} 
+}

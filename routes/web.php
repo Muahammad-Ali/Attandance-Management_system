@@ -90,13 +90,13 @@ Route::controller(SubjectController::class)->group(function () {
     Route::post('/Subject', 'store')->name('subject.store');
 });
 
-Route::controller(AdminController::class)->group(function () {
-    Route::get('/home', 'dashboard')->name('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');;
+// Fix the home route for admin dashboard
+Route::middleware(['auth', 'verified'])->group(function () {
 
-// Route::get('/dashboard',  function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/teacher/{id}/attendance', [AdminController::class, 'getTeacherDetails']);
+
+    Route::get('/home', [AdminController::class, 'dashboard'])->name('dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -142,6 +142,9 @@ Route::middleware(['auth:admin', 'admin'])->prefix('admin')->name('admin.')->gro
     Route::resource('/batchadvisors', BatchAdvisorController::class);
     Route::resource('/semestercoordinators', SemesterCoordinatorController::class);
     Route::get('/feedback', [SubjectFeedbackController::class, 'adminIndex'])->name('feedback.index');
+
+    // Teacher details for modal
+    Route::get('/teacher/{id}/details', [AdminController::class, 'getTeacherDetails'])->name('teacher.details');
 
     // Admin Attendance routes
     Route::get('/attendance', [TeacherAttendanceController::class, 'adminIndex'])->name('attendance.index');
@@ -196,7 +199,7 @@ Route::get('/create-test-users', function() {
             'code' => 'TEST'
         ]);
     }
-    
+
     // Check if semester exists, create if not
     $semester = \App\Models\Semester::first();
     if (!$semester) {
@@ -205,7 +208,7 @@ Route::get('/create-test-users', function() {
             'department_id' => $department->id
         ]);
     }
-    
+
     // Create batch advisor
     $batchAdvisor = \App\Models\BatchAdvisor::updateOrCreate(
         ['email' => 'batchadvisor@example.com'],
@@ -216,7 +219,7 @@ Route::get('/create-test-users', function() {
             'batch' => '2024'
         ]
     );
-    
+
     // Create semester coordinator
     $semesterCoordinator = \App\Models\SemesterCoordinator::updateOrCreate(
         ['email' => 'semestercoordinator@example.com'],
@@ -227,7 +230,7 @@ Route::get('/create-test-users', function() {
             'semester_id' => $semester->id
         ]
     );
-    
+
     return [
         'batchAdvisor' => $batchAdvisor,
         'semesterCoordinator' => $semesterCoordinator,

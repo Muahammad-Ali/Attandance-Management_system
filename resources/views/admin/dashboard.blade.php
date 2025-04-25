@@ -106,7 +106,7 @@
                     <table class="w-full text-sm text-left">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
-                                <th class="px-4 py-2">Teacher</th>
+                                <th class="px-4  py-2">Teacher</th>
                                 <th class="px-4 py-2">Subject</th>
                                 <th class="px-4 py-2">Date</th>
                                 <th class="px-4 py-2">Status</th>
@@ -115,7 +115,14 @@
                         <tbody>
                             @forelse($recentAttendances as $attendance)
                             <tr class="border-b hover:bg-gray-50">
-                                <td class="px-4 py-3">{{ $attendance->teacher->name }}</td>
+                                <td class="px-4 py-3">
+                                    <a href="javascript:void(0);"
+                                    class="text-blue-600 hover:underline teacher-details-link"
+                                    data-teacher-id="{{ $attendance->teacher->id }}">
+                                    {{ $attendance->teacher->name }}
+                                 </a>
+                                </td>
+
                                 <td class="px-4 py-3">{{ $attendance->assignedSubject->subject_name ?? 'N/A' }}</td>
                                 <td class="px-4 py-3">{{ $attendance->date->format('M d, Y') }}</td>
                                 <td class="px-4 py-3">
@@ -144,59 +151,89 @@
             <h2 class="mb-4 text-xl font-semibold text-gray-700">Monthly Attendance Overview</h2>
             <canvas id="myBarChart" width="200" height="50"></canvas>
         </div>
+        {{-- model --}}
+        <div id="teacherModal" class="fixed inset-0 z-50 hidden overflow-auto bg-gray-600 bg-opacity-50">
+            <div class="bg-white max-w-2xl mx-auto mt-20 rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold mb-4">Teacher Details</h2>
+                <div id="teacherModalContent">Loading...</div>
+                <button class="mt-4 px-4 py-2 bg-red-600 text-white rounded" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+
     </main>
 </x-master-layout>
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("Dashboard script loaded.");  // Debug log
     const ctx = document.getElementById('myBarChart').getContext('2d');
 
-    // Sample data (replace with actual data from your backend)
-    const data = {
-        labels: ['Present', 'Absent', 'Late'],
-        datasets: [{
-            label: 'This Month',
-            data: [
-                {{ $monthlyStats['present'] }},
-                {{ $monthlyStats['absent'] }},
-                {{ $monthlyStats['late'] }}
-            ],
-            backgroundColor: [
-                'rgba(52, 211, 153, 0.7)',
-                'rgba(239, 68, 68, 0.7)',
-                'rgba(251, 191, 36, 0.7)'
-            ],
-            borderColor: [
-                'rgb(52, 211, 153)',
-                'rgb(239, 68, 68)',
-                'rgb(251, 191, 36)'
-            ],
-            borderWidth: 1
-        }]
-    };
+    const attendanceData = @json($monthlyData);
+    const labels = attendanceData.map(item => item.date);
+    const present = attendanceData.map(item => item.present);
+    const absent = attendanceData.map(item => item.absent);
+    const late = attendanceData.map(item => item.late);
 
     new Chart(ctx, {
         type: 'bar',
-        data: data,
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Present',
+                    data: present,
+                    backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                },
+                {
+                    label: 'Absent',
+                    data: absent,
+                    backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                },
+                {
+                    label: 'Late',
+                    data: late,
+                    backgroundColor: 'rgba(251, 191, 36, 0.7)',
+                }
+            ]
+        },
         options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        precision: 0
-                    }
-                }
-            },
             responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                }
+            plugins: { legend: { position: 'top' } },
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } }
             }
         }
     });
 });
+    document.querySelectorAll('.teacher-details-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const teacherId = this.dataset.teacherId;
+
+            fetch(`/teacher/${teacherId}/attendance`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to fetch data");
+        }
+        return response.text();
+    })
+    .then(data => {
+        document.getElementById('teacherModalContent').innerHTML = data;
+        document.getElementById('teacherModal').classList.remove('hidden');
+    })
+    .catch(error => {
+        console.error("Modal fetch error:", error); // ✅ show errors in console
+        document.getElementById('teacherModalContent').innerHTML = "<p class='text-red-600'>Error loading teacher info.</p>";
+    });
+
+    });
+
+    function closeModal() {
+        document.getElementById('teacherModal').classList.add('hidden');
+    }
+
 </script>
 @endpush

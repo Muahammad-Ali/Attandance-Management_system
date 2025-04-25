@@ -13,6 +13,12 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -38,10 +44,11 @@
 
                 <!-- User Dropdown -->
                 <div class="flex items-center space-x-4 ml-auto">
-                    <span class="text-sm font-medium">{{ Auth::user()->name }}</span>
+                    <!-- <span class="text-sm font-medium">{{ Auth::user()->name }}</span> -->
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100">
+                            <button class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none">
+                                <span>{{ Auth::user()->name }}</span>
                                 <svg class="h-4 w-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                 </svg>
@@ -70,6 +77,9 @@
             </main>
         </div>
     </div>
+    
+    <!-- Scripts -->
+    @stack('scripts')
 </body>
 
 </html>

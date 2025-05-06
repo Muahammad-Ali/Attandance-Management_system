@@ -21,12 +21,12 @@
                 </a>
             </div>
         @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 animate-fadeInSlow">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 animate-fadeInSlow ">
                 @foreach($departments as $department)
                     <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
-                        <div class="bg-indigo-600 p-5">
-                            <h2 class="text-2xl font-bold text-white">{{ $department->name }}</h2>
-                            <p class="text-indigo-200 text-sm mt-1">Code: {{ $department->code }}</p>
+                        <div class="bg-indigo-600 p-5 ">
+                            <h2 class="text-2xl font-bold text-white ">{{ $department->name }}</h2>
+                            <p class="text-indigo-200 text-sm mt-1 ">Code: {{ $department->code }}</p>
                         </div>
 
                         <div class="p-5">
@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
                             @else
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 ">
                                     @foreach($department->semesters->sortBy('semester_number') as $semester)
                                         <a href="{{ route('timetables.semester', $semester->id) }}"
                                            class="block p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-all text-center max-w-[160px] overflow-hidden">

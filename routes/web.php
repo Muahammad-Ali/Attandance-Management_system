@@ -138,6 +138,8 @@ Route::middleware(['auth:admin', 'admin'])->prefix('admin')->name('admin.')->gro
     Route::resource('/teachers', TeacherController::class);
     Route::resource('/cr', CrController::class);
     Route::resource('/subjects', SubjectController::class);
+   
+
     Route::resource('/semesters', SemesterController::class);
     Route::resource('/batchadvisors', BatchAdvisorController::class);
     Route::resource('/semestercoordinators', SemesterCoordinatorController::class);

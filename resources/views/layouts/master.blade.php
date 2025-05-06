@@ -15,7 +15,7 @@
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -55,9 +55,7 @@
                             </button>
                         </x-slot>
                         <x-slot name="content">
-                            <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
-                            </x-dropdown-link>
+                            {{--  --}}
 
                             <!-- Logout -->
                             <form method="POST" action="{{ route('logout') }}">
@@ -77,7 +75,7 @@
             </main>
         </div>
     </div>
-    
+
     <!-- Scripts -->
     @stack('scripts')
 </body>

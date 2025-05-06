@@ -51,5 +51,42 @@ class SubjectController extends Controller
     return view('Teacher.AssignSubjects', compact('assignedSubjects', 'teacher'));
 }
 
+public function show($id)
+{
+    $subject = AssignedSubject::with('teacher', 'cr')->findOrFail($id);
+    return view('SubjectShow', compact('subject'));
+}
+
+public function edit($id)
+{
+    $subject = AssignedSubject::findOrFail($id);
+    $teachers = Teacher::all();
+    $crs = Cr::all();
+    return view('SubjectEdit', compact('subject', 'teachers', 'crs'));
+}
+
+public function update(Request $request, $id)
+{
+    $validated = $request->validate([
+        'subject_name' => 'required|string|max:255',
+        'teacher_id' => 'required|exists:teachers,id',
+        'cr_id' => 'required|exists:crs,id',
+        'section' => 'required|string|max:50',
+        'semester' => 'required|string|max:10',
+    ]);
+
+    $subject = AssignedSubject::findOrFail($id);
+    $subject->update($validated);
+
+    return redirect()->route('subject.index')->with('success', 'Subject updated successfully!');
+}
+
+public function destroy($id)
+{
+    $subject = AssignedSubject::findOrFail($id);
+    $subject->delete();
+
+    return redirect()->route('subject.index')->with('success', 'Subject deleted successfully!');
+}
 
 }

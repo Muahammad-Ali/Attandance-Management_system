@@ -1,7 +1,7 @@
 <div class="flex h-screen border-r ">
     <!-- Sidebar -->
     <aside
-        class="fixed top-0 left-0 z-40 h-full px-4 py-6 overflow-auto capitalize transition-transform -translate-x-full bg-white w-72 lg:translate-x-0"
+        class="fixed top-0 left-0 z-40 h-full px-4 py-6   overflow-auto capitalize transition-transform -translate-x-full bg-white w-72 lg:translate-x-0"
         aria-label="Sidebar" id="default-sidebar">
         <!-- Heading -->
         <div class=" text-folly">
@@ -37,32 +37,21 @@
             </div>
 
             <!-- Additional Sections -->
-            <div class="p-4">
+            <div class="p-3">
                 <!-- Meal -->
                 <div class="daily-meal-count">
                     <div class="flex items-center ml-6 space-x-1">
-                        <LayoutDashboard />
-
-                        <a href="{{ route('dashboard') }}" class="flex items-center py-2 font-semibold text-gray-500 rounded-lg">
+                        <i class="fa-solid fa-gauge-simple"></i>
+                        <a href="{{ route('dashboard') }}" class="flex items-center py-2 font-semibold text-gray-500 rounded-lg hover:text-gray-700">
                             Dashboard
                         </a>
-
                     </div>
-                    {{-- Daily Meal Count --}}
-                    <div class="flex items-center space-x-1 text-slate-500 ml-9">
-                        <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
-                                fill="#99A1B7" />
-                        </svg>
-                        <a class="text-black" href="{{ route('feedback') }}">Feedback</a>
 
-                    </div>
+
                 </div>
             </div>
 
-            <div class="p-4 space-y-2">
+            <div class="space-y-2 p-3">
                 <div class="flex items-center ml-6 space-x-1">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -75,111 +64,72 @@
                     <span class="space-y-2 font-semibold text-gray-500">Features</span>
                 </div>
 
-                <div class="flex items-center px-1 space-x-1 text-slate-500 ml-9">
-                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
-                            fill="#99A1B7" />
-                    </svg>
+                <div class="flex items-center px-1 space-x-1  p-1 text-slate-500 ml-9">
+                    <i class="fa-solid fa-book-open"></i>
                     <a class="text-black" href="{{ route('applications') }}">Applications</a>
                 </div>
 
-                <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
-                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
-                            fill="#99A1B7" />
-                    </svg>
+                <div class="flex items-center px-1 p-1 space-x-1 text-center text-gray-800 ml-9">
+                    <i class="fa-solid fa-chalkboard-user"></i>
 
-                    <a class="text-black"  href="{{ route('teacher') }}">Teacher</a>
+                    <a class="text-black"  href="{{ route('teacher') }}">Teacher's</a>
 
                 </div>
 
-                <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
-                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
-                            fill="#99A1B7" />
-                    </svg>
+                <div class="flex items-center p-1 px-1 space-x-1 text-center text-gray-800 ml-9">
+                    <i class="fa-solid fa-user"></i>
 
-                    <a class="text-black" href="{{ route('cr') }}">cr</a>
+                    <a class="text-black font-bold" href="{{ route('cr') }}">cr's</a>
 
                 </div>
 
-                <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
-                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
-                            fill="#99A1B7" />
-                    </svg>
+                <div class="flex items-center p-1 px-1 space-x-1 text-center text-gray-800 ml-9">
+                    <i class="fa-solid fa-book-open-reader"></i>
 
                     <a class="text-black" href="{{ route('batchadvisor.index') }}">Batch Advisors</a>
 
                 </div>
 
-                <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
-                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
-                            fill="#99A1B7" />
-                    </svg>
+                <div class="flex items-center p-1 px-1 space-x-1 text-center text-gray-800 ml-9">
+                    <i class="fa-solid fa-building-columns"></i>
 
-                    <a class="text-black" href="{{ route('semestercoordinator.index') }}">Semester Coordinators</a>
+                    <a class="text-black" href="{{ route('semestercoordinator.index') }}">SemesterCoordinators</a>
 
                 </div>
 
-                <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
-                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
-                            fill="#99A1B7" />
-                    </svg>
+                <div class="flex items-center p-1 px-1 space-x-1 text-center text-gray-800 ml-9">
+                    <i class="fa-solid fa-book"></i>
 
-                    <a class="text-black" href="{{ route('subject') }}">Subject</a>
+                    <a class="text-black" href="{{ route('subject') }}">Subject's</a>
 
                 </div>
 
                 <!-- Timetable Management Section -->
-                <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
-                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
-                            fill="#99A1B7" />
-                    </svg>
+                <div class="flex items-center px-1 p-1 space-x-1 text-center text-gray-800 ml-9">
+                    <i class="fa-solid fa-gears"></i>
 
                     <a class="text-black" href="{{ route('departments.index') }}">Programs</a>
                 </div>
 
-                <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
-                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
-                            fill="#99A1B7" />
-                    </svg>
+                <div class="flex items-center px-1 p-1 space-x-1 text-center text-gray-800 ml-9">
+                    <i class="fa-solid fa-graduation-cap"></i>
 
                     <a class="text-black" href="{{ route('semesters.index') }}">Semesters</a>
                 </div>
 
-                <div class="flex items-center px-1 space-x-1 text-center text-gray-800 ml-9">
-                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M1.71 7.28997L4.3 4.69997C4.3927 4.60746 4.46625 4.49757 4.51643 4.3766C4.56661 4.25562 4.59244 4.12594 4.59244 3.99497C4.59244 3.864 4.56661 3.73432 4.51643 3.61335C4.46625 3.49237 4.3927 3.38248 4.3 3.28997L1.71 0.699971C1.08 0.0799712 0 0.519971 0 1.40997V6.57997C0 7.47997 1.08 7.91997 1.71 7.28997Z"
-                            fill="#99A1B7" />
-                    </svg>
+                <div class="flex items-center p-1 px-1 space-x-1 text-center text-gray-800 ml-9">
+                    <i class="fa-solid fa-table"></i>
 
                     <a class="text-black" href="{{ route('timetables.index') }}">Timetables</a>
                 </div>
                 <!-- End Timetable Management Section -->
+                <div class="flex items-center p-1 space-x-1 text-slate-500 ml-9">
+                    <i class="fa-solid fa-comments"></i>
+                    <a class="text-black" href="{{ route('feedback') }}">Feedback</a>
+
+                </div>
             </div>
+
 
 
         </nav>

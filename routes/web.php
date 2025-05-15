@@ -136,9 +136,16 @@ Route::middleware(['auth:admin', 'admin'])->prefix('admin')->name('admin.')->gro
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
     Route::resource('/teachers', TeacherController::class);
-    Route::resource('/cr', CrController::class);
+    Route::get('/cr', [CrController::class, 'index'])->name('cr.index');
+Route::get('/cr/create', [CrController::class, 'create'])->name('cr.create');
+Route::post('/cr', [CrController::class, 'store'])->name('cr.store');
+
+Route::get('/cr/{id}', [CrController::class, 'show'])->name('cr.show');
+Route::get('/cr/{id}/edit', [CrController::class, 'edit'])->name('cr.edit');
+Route::put('/cr/{id}', [CrController::class, 'update'])->name('cr.update');
+Route::delete('/cr/{id}', [CrController::class, 'destroy'])->name('cr.destroy');
     Route::resource('/subjects', SubjectController::class);
-   
+
 
     Route::resource('/semesters', SemesterController::class);
     Route::resource('/batchadvisors', BatchAdvisorController::class);

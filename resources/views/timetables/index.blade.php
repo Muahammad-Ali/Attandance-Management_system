@@ -45,19 +45,29 @@
                                     </div>
                                 </div>
                             @else
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 ">
-                                    @foreach($department->semesters->sortBy('semester_number') as $semester)
-                                        <a href="{{ route('timetables.semester', $semester->id) }}"
-                                           class="block p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-all text-center max-w-[160px] overflow-hidden">
-                                            <div class="font-medium break-words text-ellipsis overflow-hidden whitespace-normal text-sm leading-snug">
-                                                Semester {{ $semester->semester_number }}
-                                            </div>
-                                            @if($semester->is_active)
-                                                <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded mt-2">Active</span>
-                                            @endif
-                                        </a>
-                                    @endforeach
-                                </div>
+
+
+                            <div class="grid grid-cols-2 gap-4">
+                                @foreach($department->semesters->sortBy('semester_number') as $semester)
+                                    <a href="{{ route('timetables.semester', $semester->id) }}"
+                                       class="flex flex-col justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-all text-center min-h-[100px] w-full">
+
+                                       <div class="flex-1 flex items-center justify-center">
+                                           <p class="font-semibold text-gray-800 text-lg">
+                                               {{ $semester->name ?? 'Semester ' . $semester->semester_number }}
+                                           </p>
+                                       </div>
+
+                                       @if($semester->is_active)
+                                           <div class="mt-2 flex justify-center">
+                                               <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded">Active</span>
+                                           </div>
+                                       @endif
+                                    </a>
+                                @endforeach
+                            </div>
+
+
                             @endif
                         </div>
                     </div>
